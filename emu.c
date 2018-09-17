@@ -43,8 +43,8 @@ void EMU_Update()
 
     int soundClicks = z80Clicks;
 
-    VDP_Update();
-    Sound_Update();
+    TMS_Update();
+    SN_Update();
 
     clicksInUpdate += smsClicks;
   }
