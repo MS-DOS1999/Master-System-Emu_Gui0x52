@@ -148,6 +148,8 @@ word tmsWidth;
 
 byte screenDisabled;
 
+byte tmsIsPal;
+
 
 
 #endif
