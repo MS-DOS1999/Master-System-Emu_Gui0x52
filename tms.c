@@ -237,3 +237,123 @@ void TMS_Render()
 		TMS_Background4();
 	}
 }
+
+void TMS_Sprite2()
+{
+	word satbase = TMS_GetSATBase();
+	word sgtable = tmsRegister[0x6] & 7;
+	sgtable <<= 11;
+
+	byte size = BIT_ByteCheck(tmsRegister[0x1], 1) ? 16 : 8;
+	byte isZoomed = BIT_ByteCheck(tmsRegister[0x1], 0);
+
+	int spriteCount = 0;
+
+	for(int sprite = 0; sprite < 32; sprite++)
+	{
+		word location = satbase + (sprite * 4);
+
+		int y = videoMemory[location];
+
+		if(y == 0xD0) //on ne dessine pas les sprites
+		{
+			if(!BIT_ByteCheck(tmsStatus, 6))
+			{
+				tmsStatus &= 0xE0;
+				tmsStatus |= sprite;
+			}
+			return;
+		}
+
+		if(y > 0xD0)
+		{
+			y -= 0x100;
+		}
+
+		y++;
+
+		if((VCounter >= y) && (VCounter < (y+size)))
+		{
+			byte x = videoMemory[location+1];
+			byte pattern = videoMemory[location+2];
+			byte color = videoMemory[location+3];
+			byte ec = BIT_ByteCheck(color, 7);
+
+			if(ec)
+			{
+				x-=32;
+			}
+
+			color &= 0xF;
+
+			if(color == 0)
+			{
+				continue;
+			}
+
+			spriteCount++:
+
+			if(spriteCount > 4)
+			{
+				TMS_IllegalSprites2(sprite);
+				return;
+			}
+			else
+			{
+				BIT_ByteClear(&tmsStatus, 6);
+			}
+
+			int line = VCounter - y;
+
+			if(size == 8)
+			{
+				TMS_DrawSprite2(sgtable + (pattern * 8), x, line, color);
+			}
+			else
+			{
+				word address = sgtable + ((pattern & 252) * 8)
+				TMS_DrawSprite2(address, x, line, color);
+				TMS_DrawSprite2(address, x+8, line+16, color);
+			}
+		}
+	}
+
+	tmsStatus &= 0xE0;
+	tmsStatus |= 31;
+}
+
+void TMS_IllegalSprites2(byte sprite)
+{
+	BIT_ByteSet(&tmsStatus, 6);
+	tmsStatus &= 0xE0;
+	tmsStatus |= sprite;
+}
+
+void TMS_DrawSprite2(word address, byte x, byte line, byte color)
+{
+	byte red = 0;
+	byte green = 0;
+	byte blue = 0;
+
+	TMS_GetOldColor(color, &red, &green, &blue);
+	byte invert = 7;
+	for(int i = 0; i < 8; i++; invert--)
+	{
+		byte drawLine = videoMemory[address + line];
+		byte xpos = x + i;
+
+		//on check la collision du sprite
+		if(TMS_GetPixelColor(xpos, VCounter, 0) != 1)
+		{
+			BIT_ByteSet(&tmsStatus, 5);
+			continue;
+		}
+
+		if(!BIT_ByteCheck(drawLine, invert))
+		{
+			continue;
+		}
+
+		TMS_WritePixel(xpos, VCounter, red, green, blue);
+	}
+}

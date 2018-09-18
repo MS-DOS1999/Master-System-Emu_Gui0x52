@@ -61,6 +61,10 @@ VCounter Values = 0x0-0xFF,0-0x0A,0xD2,0xFF
 #define NUM_RES_VERT_MED   224
 #define NUM_RES_VERT_HIGH  240
 
+byte screenSmall[NUM_RES_HORIZONTAL][NUM_RES_VERT_SMALL][3];
+byte screenMedium[NUM_RES_HORIZONTAL][NUM_RES_VERT_MED][3];
+byte screenHigh[NUM_RES_HORIZONTAL][NUM_RES_VERT_HIGH][3];
+
 /*
 Register 0x0:
 Bit7 = If set then vertial scrolling for columns 24-31 are disabled
@@ -143,6 +147,8 @@ word tmsHeight;
 word tmsWidth;
 
 byte screenDisabled;
+
+
 
 #endif
 
