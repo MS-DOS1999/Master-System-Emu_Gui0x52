@@ -139,6 +139,30 @@ word TMS_GetSATBase()
 	return res;
 }
 
+word TMS_GetNTBase()
+{
+	byte reg = tmsRegister[0x2];
+	reg &= 0xF;
+	BIT_ByteClear(&reg, 0);
+
+	if(tmsHeight != NUM_RES_VERT_SMALL)
+	{
+		reg >>= 2;
+		reg &= 0x3;
+
+		switch(reg)
+		{
+			case 0: return 0x700;  break;
+			case 1: return 0x1700; break;
+			case 2: return 0x2700; break;
+			case 3: return 0x3700; break;
+		}
+	}
+
+	word res = reg << 10;
+	return res;
+}
+
 byte TMS_GetColorShade(byte value)
 {
 	switch(value)
@@ -260,16 +284,16 @@ void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue)
 {
 	switch (color)
 	{
-		case 0:   *red = 0;   *green = 0;   *blue = 0;   break; // transparent
-		case 1:   *red = 0;   *green = 0;   *blue = 0;   break; // black
-		case 2:   *red = 33;  *green = 200; *blue = 66;  break; // medium green
-		case 3:   *red = 94;  *green = 220; *blue = 120; break; // light green
-		case 4:   *red = 84;  *green = 85;  *blue = 237; break; // dark blue
-		case 5:   *red = 125; *green = 118; *blue = 252; break; // light blue
-		case 6:   *red = 212; *green = 82;  *blue = 77;  break; // dark red
-		case 7:   *red = 66;  *green = 235; *blue = 245; break; // cyan
-		case 8:   *red = 252; *green = 85;  *blue = 84;  break; // medium red
-		case 9:   *red = 255; *green = 121; *blue = 120; break; // light red
+		case 0x0: *red = 0;   *green = 0;   *blue = 0;   break; // transparent
+		case 0x1: *red = 0;   *green = 0;   *blue = 0;   break; // black
+		case 0x2: *red = 33;  *green = 200; *blue = 66;  break; // medium green
+		case 0x3: *red = 94;  *green = 220; *blue = 120; break; // light green
+		case 0x4: *red = 84;  *green = 85;  *blue = 237; break; // dark blue
+		case 0x5: *red = 125; *green = 118; *blue = 252; break; // light blue
+		case 0x6: *red = 212; *green = 82;  *blue = 77;  break; // dark red
+		case 0x7: *red = 66;  *green = 235; *blue = 245; break; // cyan
+		case 0x8: *red = 252; *green = 85;  *blue = 84;  break; // medium red
+		case 0x9: *red = 255; *green = 121; *blue = 120; break; // light red
 		case 0xA: *red = 212; *green = 193; *blue = 84;  break; // dark yellow
 		case 0xB: *red = 230; *green = 206; *blue = 84;  break; // light yellow
 		case 0xC: *red = 33;  *green = 176; *blue = 59;  break; // dark green
@@ -608,7 +632,7 @@ void Sprite4()
 
 			int col = 7;
 
-			for(int i = 0; i < 8; i++; col--;)
+			for(int i = 0; i < 8; i++, col--;)
 			{
 				if((x+i) >= NUM_RES_HORIZONTAL)
 				{
@@ -646,6 +670,112 @@ void Sprite4()
 
 				TMS_WritePixel(x+i, VCounter, TMS_GetColorShade(red), TMS_GetColorShade(green), TMS_GetColorShade(blue));
 			}
+		}
+	}
+}
+
+void TMS_Background2()
+{
+	// reg 3 contains colour table info
+	// reg 4 contains the pattern table info
+	// if bit 2 is set of reg 4 the pattern table address starts at 0x2000 otherwise 0x0
+	// if bit 7 is set of reg 3 the colour table address starts at 0x2000 otherwise 0x0
+	// bits 0 to 6 of reg 3 get anded over bits 1-7 of the character number
+	// bit 0-6 get anded over bit 1-7 of character number so shift left 1
+
+	word ntBase = TMS_GetNTBase();
+
+	word ptaBase = BIT_ByteCheck(tmsRegister[0x4], 2) ? 0x2000 : 0x0;
+
+	word ctaBase = BIT_ByteCheck(tmsRegister[0x3], 7) ? 0x2000 : 0x0;
+
+	byte ctaAND = tmsRegister[0x3] & 127;
+
+	ctaAND <<= 1;
+
+	BIT_ByteSet(&ctaAND, 0);
+
+	int row = VCounter / 8;
+
+	patternTable = 0;
+
+	if(row > 7)
+	{
+		if(row > 15)
+		{
+			if(BIT_ByteCheck(tmsRegister[0x4], 1))
+			{
+				patternTable = 2;
+			}
+		}
+		else
+		{
+			if(BIT_ByteCheck(tmsRegister[0x4], 0))
+			{
+				patternTable = 1;
+			}
+		}
+	}
+
+	word word patternTableOffset = 0;
+
+	if(patternTable == 1)
+	{
+		patternTableOffset = 256 * 8;
+	}
+	else if(patternTable == 2)
+	{
+		patternTableOffset = 256 * 2 * 8;
+	}
+
+	int line = VCounter % 8;
+
+	for(int column = 0; column < 32; column++)
+	{
+		word ntBaseCopy = ntBase + ((row * 32) + column);
+
+		byte pattern = videoMemory[ntBaseCopy];
+		word ptAddress = ptaBase + (pattern * 8);
+
+		ptAddress += patternTableOffset;
+		ptAddress += line;
+
+		byte pixelLine = videoMemory[ptAddress];
+		byte colIndex = pattern & ctaAND;
+
+		byte color = videoMemory[ctaBase + (colIndex * 8) + patternTableOffset + line];
+		byte fore = color >> 4;
+		byte back = color & 0xF;
+
+		int invert = 7;
+		for(int x = 0; x < 8; x++, invert--)
+		{
+			byte colNum = BIT_ByteCheck(pixelLine, invert) ? fore : back;
+
+			if(colNum == 0)
+			{
+				continue;
+			}
+
+			byte red = 0;
+			byte green = 0;
+			byte blue = 0;
+
+			TMS_GetOldColor(colNum, red, green, blue);
+
+			int xpos = (column * 8) + x;
+
+			if(TMS_GetPixelColor(xpos, VCounter, 0) != 1)
+			{
+				continue;
+			}
+
+			if(xpos >= NUM_RES_HORIZONTAL)
+			{
+				continue;
+			}
+
+			TMS_WritePixel(xpos, VCounter, red, green, blue);
 		}
 	}
 }
