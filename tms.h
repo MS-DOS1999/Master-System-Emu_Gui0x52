@@ -152,5 +152,31 @@ byte tmsIsPal;
 
 
 
+void TMS_WriteAddress(byte data);
+void TMS_IncrementAddress();
+word TMS_GetAddressRegister();
+void TMS_SetRegisterData();
+byte TMS_GetCodeRegister();
+byte TMS_GetStatus();
+void TMS_WriteDataPort(byte data);
+byte TMS_ReadDataPort();
+word TMS_GetSATBase();
+word TMS_GetNTBase();
+byte TMS_GetColorShade(byte value);
+void TMS_WritePixel(byte x, byte y, byte red, byte green, byte blue);
+byte TMS_GetPixelColor(byte x, byte y, int color);
+byte TMS_GetVJump();
+byte TMS_GetVJumpTo();
+void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue);
+void TMS_Update(float nextCycle);
+byte TMS_GetMode();
+void TMS_Render();
+void TMS_Sprite2();
+void TMS_IllegalSprites2(byte sprite);
+void TMS_DrawSprite2(word address, byte x, byte line, byte color);
+void Sprite4();
+void TMS_Background2();
+void TMS_Background4();
+
 #endif
 
