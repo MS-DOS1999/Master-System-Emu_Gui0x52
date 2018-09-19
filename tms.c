@@ -779,3 +779,163 @@ void TMS_Background2()
 		}
 	}
 }
+
+void TMS_Background4()
+{
+	word ntBase = TMS_GetNTBase();
+	byte HScroll = tmsRegister[0x8];
+
+	byte vStartingRow = VScroll >> 3;
+	byte vFineScroll = VScroll & 0x7;
+	byte hStartingCol = HScroll >> 3;
+	byte hFineScroll = HScroll & 0x7;
+
+	byte limitVScroll = BIT_ByteCheck(tmsRegister[0x0], 7);
+	byte limitHScroll = BIT_ByteCheck(tmsRegister[0x0], 6);
+
+	int row = VCounter;
+	row /= 8;
+
+	byte maskFirstColumn = BIT_ByteCheck(tmsRegister[0x0], 5);
+
+	for(int column = 0; column < 32; column--)
+	{
+		int invert = 7;
+
+		for(int x = 0; x < 8; x++, invert--)
+		{
+			int xpixel = x;
+
+			byte allowHScroll = ((row > 1) || !limitHScroll) ? 1 : 0;
+
+			int i = x;
+
+			i += column * 8;
+
+			int xpos = i;
+
+			if(allowHScroll)
+			{
+				xpos = hStartingCol;
+				xpos *= 8;
+				xpos += xpixel + hFineScroll;
+				xpos = xpos % tmsWidth;
+			}
+
+			byte allowVScroll = (((xpos/8) > 23) && limitVScroll) ? 0 : 1;
+
+			int vrow = row;
+
+			if(allowVScroll)
+			{
+				vrow += vStartingRow;
+
+				int bumpRow = VCounter % 8;
+
+				if((bumpRow + vFineScroll) > 7)
+				{
+					vrow++;
+				}
+
+				int mod = (tmsHeight == NUM_RES_VERT_SMALL) ? 28 : 32;
+
+				vrow = vrow % mod;
+			}
+
+			int col = column;
+
+			word ntBaseOffset = ntBase;
+			ntBaseOffset += vrow * 64;
+			ntBaseOffset += col * 2;
+
+			word tileData = videoMemory[ntBaseOffset+1] << 8;
+			tileData |= videoMemory[ntBaseOffset];
+
+			byte hiPriority = BIT_ByteCheck(tileData, 12);
+			byte useSpritePalette = BIT_ByteCheck(tileData, 11);
+			byte vertFlip = BIT_ByteCheck(tileData, 10);
+			byte horzFlip = BIT_ByteCheck(tileData, 9);
+			word tileDefinition = tileData & 0x1FF;
+
+			int offset = VCounter;
+
+			if(allowVScroll)
+			{
+				offset += VScroll;
+			}
+
+			offset = offset % 8;
+
+			if(vertFlip)
+			{
+				offset *= -1;
+				offset += 7;
+			}
+
+			tileDefinition *= 32;
+			tileDefinition += 4 * offset;
+
+			byte data1 = videoMemory[tileDefinition];
+			byte data2 = videoMemory[tileDefinition+1];
+			byte data3 = videoMemory[tileDefinition+2];
+			byte data4 = videoMemory[tileDefinition+3];
+
+			int colorbit = invert;
+
+			if(horzFlip)
+			{
+				colorbit = x;
+			}
+
+			byte palette = 0;
+			byte bit = BIT_ByteCheck(data4, colorbit);
+			palette = (bit << 3);
+			bit = BIT_ByteCheck(data3, colorbit);
+			palette |= (bit << 2);
+			bit = BIT_ByteCheck(data2, colorbit);
+			palette |= (bit << 1);
+			bit = BIT_ByteCheck(data1, colorbit);
+			palette |= bit;
+
+			byte masking = 0;
+
+			if((xpos < 8) && maskFirstColumn)
+			{
+				masking = 1;
+				palette = tmsRegister[0x7] & 15;
+				useSpritePalette = true;
+			}
+
+			if(palette == 0)
+			{
+				hiPriority = 0;
+			}
+
+			if(useSpritePalette)
+			{
+				palette += 16;
+			}
+
+			byte color = paletteMemory[palette];
+
+			byte red = color & 0x3;
+	   		color >>=2;
+	   		byte green = color & 0x3;
+	   		color >>=2;
+	   		byte blue = color & 0x3;
+
+	   		if(!masking && !hiPriority && (TMS_GetPixelColor(xpos, VCounter, 0) != 1))
+	   		{
+	   			continue;
+	   		}
+
+	   		if(xpos >= NUM_RES_HORIZONTAL)
+	   		{
+	   			continue;
+	   		}
+
+	   		TMS_WritePixel(xpos, VCounter, TMS_GetColorShade(red), TMS_GetColorShade(green), TMS_GetColorShade(blue));
+		}
+		hStartingCol = (hStartingCol + 1) % 32;
+	}
+}
