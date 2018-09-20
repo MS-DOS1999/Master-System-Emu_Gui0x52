@@ -1,6 +1,7 @@
 #ifndef Z80_H
 #define Z80_H
 
+#include <stdio.h>
 #include "oldSize.h"
 #include "emu.h"
 
@@ -48,7 +49,7 @@ word stackPointer;
 word registerI;
 word registerR;
 
-union Z80_register
+typedef union
 {
   word reg;
   struct
@@ -56,7 +57,7 @@ union Z80_register
     byte lo;
     byte hi;
   };
-};
+}Z80_register;
 
 Z80_register registerAF;
 Z80_register registerBC;
@@ -76,6 +77,6 @@ void Z80_IncRegR();
 int Z80_IsEvenParity(byte x);
 word Z80_FetchWord();
 byte Z80_FetchByte();
-int Z80_ExecuteOpcode();
+int Z80_ExecuteOpcode(byte opcode);
 
 #endif

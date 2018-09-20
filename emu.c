@@ -2,21 +2,90 @@
 
 int main()
 {
-  const double VdpUpdateInterval = 1000/60;
+
+  sfVideoMode mode = {256, 240, 32};
+
+  window = sfRenderWindow_create(mode, "Seb70 - Master System Emulator", sfClose, NULL);
+
+  sfClock* clock;
+
+  clock = sfClock_create();
+
+  sfImage* screenImg;
+  sfTexture* screenTex;
+  sfSprite* screenSpr;
+
+  screenImg = sfImage_createFromColor(256, 240, sfWhite);
+  screenTex = sfTexture_createFromImage(screenImg, NULL);
+  screenSpr = sfSprite_create();
+  sfSprite_setTexture(screenSpr, screenTex, sfTrue);
+  sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
+
+  EMU_Init();
+  EMU_LoadRom("zexall.sms");
+
+  const double VdpUpdateInterval = 1000/FPS;
+
   double lastFrameTime = 0;
-  while(1) //emu loop
+
+  while(sfRenderWindow_isOpen(window)) //emu loop
   {
-    double currentTime = //API getCurrentime();
+    double currentTime = sfTime_asMilliseconds(sfClock_getElapsedTime(clock));
 
     //on draw une frame toutes les 1/60 secondes
     if((lastFrameTime + VdpUpdateInterval) <= currentTime)
     {
       lastFrameTime = currentTime;
+
       EMU_Update();
+
+      EMU_Render(screenImg, screenTex, screenSpr);
     }
   }
 
   return 0;
+}
+
+void EMU_Init()
+{
+  memset(smsMemory, 0, sizeof(smsMemory));
+  memset(gameMemory, 0, sizeof(gameMemory));
+  memset(ramBank, 0, sizeof(ramBank));
+
+  registerAF.reg = 0x0000;
+  registerBC.reg = 0x0000;
+  registerDE.reg = 0x0000;
+  registerHL.reg = 0x0000;
+  registerAFShadow.reg = 0x0000;
+  registerBCShadow.reg = 0x0000;
+  registerDEShadow.reg = 0x0000;
+  registerHLShadow.reg = 0x0000;
+
+  registerIX.reg = 0x0000;
+  registerIY.reg = 0x0000;
+
+  registerI = 0;
+  registerR = 0;
+
+  programCounter = 0;
+  stackPointer = 0xDFF0;
+
+  smsMemory[0xFFFF] = 2;
+  smsMemory[0xFFFE] = 1;
+
+  isCodeMaster = 0;
+  oneMegaCartridge = 0;
+  ramBankNumber = -1;
+
+  slot0Page = 0;
+  slot1Page = 1;
+  slot2Page = 2;
+
+  tmsIsPal = 0;
+
+  FPS = tmsIsPal ? 50 : 60;
+
+  TMS_Init();
 
 }
 
@@ -35,27 +104,81 @@ void EMU_Update()
   {
     int z80Clicks = Z80_ExecuteInstruction();
 
-    Z80_UpdateInterrupts();
+    //Z80_UpdateInterrupts();
 
-    int smsClicks = z80ClockCycles * 3;
+    int smsClicks = z80Clicks * 3;
 
     float vdpClicks = smsClicks / 2;
 
     int soundClicks = z80Clicks;
 
     TMS_Update(vdpClicks);
-    SN_Update();
+    //SN_Update();
 
     clicksInUpdate += smsClicks;
   }
 
 }
 
+void EMU_Render(sfImage* screenImg, sfTexture* screenTex, sfSprite* screenSpr)
+{
+
+  if(tmsHeight == NUM_RES_VERT_SMALL)
+  {
+    for(int y = 0; y < 192; y++)
+    {
+      for(int x = 0; x < 256; x++)
+      {
+        sfColor color;
+        color.r = screenSmall[x][y][0];
+        color.g = screenSmall[x][y][1];
+        color.b = screenSmall[x][y][2];
+        color.a = 0;
+        sfImage_setPixel(screenImg, x, y, color);
+      }
+    }
+  }
+  else if(tmsHeight == NUM_RES_VERT_MED)
+  {
+    for(int y = 0; y < 224; y++)
+    {
+      for(int x = 0; x < 256; x++)
+      {
+        sfColor color;
+        color.r = screenMedium[x][y][0];
+        color.g = screenMedium[x][y][1];
+        color.b = screenMedium[x][y][2];
+        color.a = 0;
+        sfImage_setPixel(screenImg, x, y, color);
+      }
+    }
+  }
+  else if(tmsHeight == NUM_RES_VERT_HIGH)
+  {
+    for(int y = 0; y < 240; y++)
+    {
+      for(int x = 0; x < 256; x++)
+      {
+        sfColor color;
+        color.r = screenHigh[x][y][0];
+        color.g = screenHigh[x][y][1];
+        color.b = screenHigh[x][y][2];
+        color.a = 0;
+        sfImage_setPixel(screenImg, x, y, color);
+      }
+    }
+  }
+
+  sfTexture_updateFromImage(screenTex, screenImg, 0, 0);
+  sfSprite_setTexture(screenSpr, screenTex, sfTrue);
+
+  sfRenderWindow_clear(window, sfBlack);
+  sfRenderWindow_drawSprite(window, screenSpr, NULL);
+  sfRenderWindow_display(window);
+}
+
 void EMU_LoadRom(const char* romName)
 {
-  memset(smsMemory, 0, sizeof(smsMemory));
-  memset(gameMemory, 0, sizeof(gameMemory));
-
   FILE *gameRom = NULL;
 
   gameRom = fopen(romName, "rb");
@@ -65,7 +188,7 @@ void EMU_LoadRom(const char* romName)
   long endPos = ftell(gameRom);
   fclose(gameRom);
 
-  gameRom = fopen(gameRom, "rb");
+  gameRom = fopen(romName, "rb");
 
   //on check si il y a un header
   endPos = endPos % 0x4000;
@@ -82,8 +205,8 @@ void EMU_LoadRom(const char* romName)
     fread(header, 1, 64, gameRom);
   }
 
-  fread(gameMemory, 0, sizeof(gameMemory, 1, 0x100000, gameRom));
-  oneMegaCartridge = (endPos > 0x80000) ? true : false;
+  fread(gameMemory, 1, 0x100000, gameRom);
+  oneMegaCartridge = (endPos > 0x80000) ? 1 : 0;
 
   //on copy les trois première page de jeu dans la memoire de la sms
   memcpy(&smsMemory[0x0], &gameMemory[0x0], 0xC000);
@@ -121,7 +244,7 @@ void EMU_WriteMem(word address, byte data)
   {
     if(address == 0x0 || address == 0x4000 || address == 0x8000)
     {
-      EMU_SetPagingCodeMaster(address, byte);
+      EMU_SetPagingCodeMaster(address, data);
     }
   }
 
@@ -177,7 +300,7 @@ void EMU_SetPaging(word address, byte data)
     if(BIT_ByteCheck(data, 3)) //RAM
     {
       //on swap quel bank ?
-      BIT_ByteCheck(data, 2) ? ramBankNumber = 1 : ramBankNumber = 0;
+      ramBankNumber = BIT_ByteCheck(data, 2) ? 1 : 0;
     }
     else //ROM
     {

@@ -2,6 +2,9 @@
 #define TMS_H
 
 #include "oldSize.h"
+#include "bitUtils.h"
+#include <math.h>
+#include <string.h>
 
 /*
 0x0000 - 0x1FFF = Sprite / tile patters (numbers 0 to 255) 
@@ -38,7 +41,7 @@ VCounter values = 0x0-0xEA, 0x0E5-0xFF
 NTSC 256x240(large)
 doesnt work in NTSC
 
-PAL 256x224(small)
+PAL 256x192(small)
 0 - 191 = active display 
 192 - 255 = inactive display
 VCounter Values = 0x0-0xF2,0xBA-0xFF
@@ -146,8 +149,6 @@ float tmsRunningCycles;
 word tmsHeight;
 word tmsWidth;
 
-byte screenDisabled;
-
 byte tmsIsPal;
 
 
@@ -168,13 +169,14 @@ byte TMS_GetPixelColor(byte x, byte y, int color);
 byte TMS_GetVJump();
 byte TMS_GetVJumpTo();
 void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue);
+void TMS_Init();
 void TMS_Update(float nextCycle);
 byte TMS_GetMode();
 void TMS_Render();
 void TMS_Sprite2();
 void TMS_IllegalSprites2(byte sprite);
 void TMS_DrawSprite2(word address, byte x, byte line, byte color);
-void Sprite4();
+void TMS_Sprite4();
 void TMS_Background2();
 void TMS_Background4();
 

@@ -303,13 +303,45 @@ void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue)
 	}
 }
 
+void TMS_Init()
+{
+	tmsIsPal = 1;
+	isVblank = 0;
+	isSecondWrite = 0;
+	tmsStatus = 0;
+	tmsIrq = 0;
+	VScroll = 0;
+	readBuffer = 0;
+	tmsWidth = NUM_RES_HORIZONTAL;
+	tmsHeight = NUM_RES_VERT_SMALL;
+
+	memset(videoMemory, 0, sizeof(videoMemory));
+	memset(paletteMemory, 0, sizeof(paletteMemory));
+	memset(tmsRegister, 0, sizeof(tmsRegister));
+
+	tmsRegister[0x2] = 0xFF;
+	tmsRegister[0x3] = 0xFF;
+	tmsRegister[0x4] = 0x07;
+	tmsRegister[0x5] = 0xFF;
+	tmsRegister[0xA] = 0xFF;
+
+	controlWord = 0;
+	HCounter = 0;
+	VCounter = 0;
+	VCounterFirst = 1;
+	lineInterrupt = 0;
+
+	memset(screenSmall, 1, sizeof(screenSmall));
+	memset(screenMedium, 1, sizeof(screenMedium));
+	memset(screenHigh, 1, sizeof(screenHigh));
+}
+
 void TMS_Update(float nextCycle)
 {
 	tmsIrq = 0;
 	word hcount = HCounter;
 	byte nextline = 0;
 	isVblank = 0;
-	tmsRefresh = 0;
 
 	tmsRunningCycles += nextCycle;
 
@@ -335,7 +367,6 @@ void TMS_Update(float nextCycle)
 			VCounter = 0;
 			VCounterFirst = 1;
 			TMS_Render();
-			tmsRefresh = 1;
 		}
 		else if((vcount == TMS_GetVJump()) && VCounterFirst)
 		{
@@ -376,7 +407,6 @@ void TMS_Update(float nextCycle)
 
 		if(VCounter < tmsHeight)
 		{
-			screenDisabled = !BIT_ByteCheck(tmsRegister[0x1], 6);
 			TMS_Render();
 		}
 
@@ -422,12 +452,12 @@ void TMS_Render()
 
 	if(mode == 2)
 	{
-		TMS_Sprite2():
+		TMS_Sprite2();
 		TMS_Background2();
 	}
 	else
 	{
-		TMS_Sprite4():
+		TMS_Sprite4();
 		TMS_Background4();
 	}
 }
@@ -485,7 +515,7 @@ void TMS_Sprite2()
 				continue;
 			}
 
-			spriteCount++:
+			spriteCount++;
 
 			if(spriteCount > 4)
 			{
@@ -505,7 +535,7 @@ void TMS_Sprite2()
 			}
 			else
 			{
-				word address = sgtable + ((pattern & 252) * 8)
+				word address = sgtable + ((pattern & 252) * 8);
 				TMS_DrawSprite2(address, x, line, color);
 				TMS_DrawSprite2(address, x+8, line+16, color);
 			}
@@ -531,7 +561,7 @@ void TMS_DrawSprite2(word address, byte x, byte line, byte color)
 
 	TMS_GetOldColor(color, &red, &green, &blue);
 	byte invert = 7;
-	for(int i = 0; i < 8; i++; invert--)
+	for(int i = 0; i < 8; i++, invert--)
 	{
 		byte drawLine = videoMemory[address + line];
 		byte xpos = x + i;
@@ -552,7 +582,7 @@ void TMS_DrawSprite2(word address, byte x, byte line, byte color)
 	}
 }
 
-void Sprite4()
+void TMS_Sprite4()
 {
 	int spriteCount = 0;
 	word satbase = TMS_GetSATBase();
@@ -632,7 +662,7 @@ void Sprite4()
 
 			int col = 7;
 
-			for(int i = 0; i < 8; i++, col--;)
+			for(int i = 0; i < 8; i++, col--)
 			{
 				if((x+i) >= NUM_RES_HORIZONTAL)
 				{
@@ -697,7 +727,7 @@ void TMS_Background2()
 
 	int row = VCounter / 8;
 
-	patternTable = 0;
+	int patternTable = 0;
 
 	if(row > 7)
 	{
@@ -717,7 +747,7 @@ void TMS_Background2()
 		}
 	}
 
-	word word patternTableOffset = 0;
+	word patternTableOffset = 0;
 
 	if(patternTable == 1)
 	{
@@ -761,7 +791,7 @@ void TMS_Background2()
 			byte green = 0;
 			byte blue = 0;
 
-			TMS_GetOldColor(colNum, red, green, blue);
+			TMS_GetOldColor(colNum, &red, &green, &blue);
 
 			int xpos = (column * 8) + x;
 
@@ -903,7 +933,7 @@ void TMS_Background4()
 			{
 				masking = 1;
 				palette = tmsRegister[0x7] & 15;
-				useSpritePalette = true;
+				useSpritePalette = 1;
 			}
 
 			if(palette == 0)
