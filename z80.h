@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "oldSize.h"
 #include "emu.h"
+#include "tms.h"
 
 #define C_Flag 0
 #define N_Flag 1
@@ -72,10 +73,19 @@ Z80_register registerHLShadow;
 Z80_register registerIX;
 Z80_register registerIY;
 
+byte ResetInt;
+byte ExecuteReset;
+int IntMode;
+byte IFF1;
+byte IFF2;
+byte Halted;
+
+void Z80_UpdateInterrupts();
 int Z80_ExecuteInstruction();
 void Z80_IncRegR();
 int Z80_IsEvenParity(byte x);
 word Z80_FetchWord();
+void Z80_PushWord(word value);
 byte Z80_FetchByte();
 int Z80_ExecuteOpcode(byte opcode);
 

@@ -73,6 +73,13 @@ void EMU_Init()
   smsMemory[0xFFFF] = 2;
   smsMemory[0xFFFE] = 1;
 
+  IFF1 = 0;
+  IFF2 = 0;
+  Halted = 0;
+  ResetInt = 0;
+  ExecuteReset = 0;
+  IntMode = 1;
+
   isCodeMaster = 0;
   oneMegaCartridge = 0;
   ramBankNumber = -1;
@@ -104,7 +111,7 @@ void EMU_Update()
   {
     int z80Clicks = Z80_ExecuteInstruction();
 
-    //Z80_UpdateInterrupts();
+    Z80_UpdateInterrupts();
 
     int smsClicks = z80Clicks * 3;
 
@@ -389,4 +396,63 @@ byte EMU_ReadMem(word address)
   }
 
   smsMemory[address];
+}
+
+byte EMU_ReadIO(word address)
+{
+  if(address < 0x40)
+  {
+    return 0xFF;
+  }
+
+  if((address >= 0x40) && (address < 0x80))
+  {
+    if((address % 2) == 0)
+    {
+      return VCounter;
+    }
+
+    return HCounter;
+  }
+
+  if((address >= 0x80) && (address < 0xC0))
+  {
+    if((address % 2) == 0)
+    {
+      return TMS_ReadDataPort();
+    }
+
+    return TMS_GetStatus();
+  }
+
+  switch(address)
+  {
+    case 0xDC: return 0xFF; break; //keyPort1
+    case 0xC0: return 0xFF; break; //keyPort1
+    case 0xDD: return 0xFF; break; //keyPort2
+    case 0xC1: return 0xFF; break; //keyPort2
+    default : return 0xFF; break;
+  }
+}
+
+void EMU_WriteIO(byte address, byte data)
+{
+  if(address < 0x40)
+  {
+    return;
+  }
+
+  if((address >= 0x40) && (address < 0x80))
+  {
+    //sound write
+    return;
+  }
+
+  switch(address)
+  {
+    case 0xBE: TMS_WriteDataPort(data); break;
+    case 0xBF: TMS_WriteAddress(data); break;
+    case 0xBD: TMS_WriteAddress(data); break;
+    default: break;
+  }
 }

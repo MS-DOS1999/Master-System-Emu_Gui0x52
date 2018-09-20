@@ -1,5 +1,32 @@
 #include "z80.h"
 
+void Z80_UpdateInterrupts()
+{
+  if(ResetInt && !ExecuteReset)
+  {
+    Z80_IncRegR();
+    ExecuteReset = 1;
+    ResetInt = 0;
+    IFF1 = 0;
+    Halted = 0;
+    Z80_PushWord(programCounter);
+    programCounter = 0x66;
+  }
+
+  if(tmsIrq)
+  {
+    Z80_IncRegR();
+    if(IFF1 && IntMode == 1)
+    {
+      Halted = 0;
+      Z80_PushWord(programCounter);
+      programCounter = 0x38;
+      IFF1 = 0;
+      IFF2 = 0;
+    }
+  }
+}
+
 int Z80_ExecuteInstruction()
 {
   int OpcodeClicks = 0;
@@ -41,6 +68,16 @@ word Z80_FetchWord()
 	res = res << 8;
 	res |= EMU_ReadMem(programCounter);
 	return res;
+}
+
+void Z80_PushWord(word value)
+{
+  byte hi = value >> 8;
+  byte lo = value & 0xFF;
+  stackPointer--;
+  EMU_WriteMem(stackPointer, hi);
+  stackPointer--;
+  EMU_WriteMem(stackPointer, lo);
 }
 
 byte Z80_FetchByte()
@@ -910,13 +947,38 @@ int Z80_ExecuteOpcode(byte opcode)
       OpcodeClicks = 4;
       break;
     }
+    case 0xED:
+    {
+
+    }
+    case 0xF3:
+    {
+      IFF1 = 0;
+      IFF2 = 0;
+      OpcodeClicks = 4;
+      break;
+    }
 
     default:
     {
-      printf("Unimplemented Opcode : 0x%X\n");
+      printf("Unimplemented Opcode : 0x%X\n", opcode);
       break;
     }
   }
 
   return OpcodeClicks;
+}
+
+int Z80_ExecuteEXTDOpcode()
+{
+  byte opcode = EMU_ReadMem(programCounter);
+
+  Z80_IncRegR();
+
+  programCounter++;
+
+  switch(opcode)
+  {
+
+  }
 }
