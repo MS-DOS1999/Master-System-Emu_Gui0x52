@@ -5,6 +5,7 @@
 #include "bitUtils.h"
 #include <math.h>
 #include <string.h>
+#include <stdio.h>
 
 /*
 0x0000 - 0x1FFF = Sprite / tile patters (numbers 0 to 255) 

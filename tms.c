@@ -305,7 +305,6 @@ void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue)
 
 void TMS_Init()
 {
-	tmsIsPal = 1;
 	isVblank = 0;
 	isSecondWrite = 0;
 	tmsStatus = 0;
@@ -706,6 +705,7 @@ void TMS_Sprite4()
 
 void TMS_Background2()
 {
+
 	// reg 3 contains colour table info
 	// reg 4 contains the pattern table info
 	// if bit 2 is set of reg 4 the pattern table address starts at 0x2000 otherwise 0x0
@@ -812,6 +812,7 @@ void TMS_Background2()
 
 void TMS_Background4()
 {
+
 	word ntBase = TMS_GetNTBase();
 	byte HScroll = tmsRegister[0x8];
 
@@ -828,7 +829,7 @@ void TMS_Background4()
 
 	byte maskFirstColumn = BIT_ByteCheck(tmsRegister[0x0], 5);
 
-	for(int column = 0; column < 32; column--)
+	for(int column = 0; column < 32; column++)
 	{
 		int invert = 7;
 

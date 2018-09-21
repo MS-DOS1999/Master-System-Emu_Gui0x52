@@ -398,7 +398,7 @@ byte EMU_ReadMem(word address)
   smsMemory[address];
 }
 
-byte EMU_ReadIO(word address)
+byte EMU_ReadIO(byte address)
 {
   if(address < 0x40)
   {

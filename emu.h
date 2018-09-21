@@ -52,5 +52,7 @@ void EMU_WriteMem(word address, byte data);
 void EMU_SetPaging(word address, byte data);
 void EMU_SetPagingCodeMaster(word address, byte data);
 byte EMU_ReadMem(word address);
+byte EMU_ReadIO(byte address);
+void EMU_WriteIO(byte address, byte data);
 
 #endif

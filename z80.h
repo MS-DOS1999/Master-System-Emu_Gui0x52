@@ -86,7 +86,9 @@ void Z80_IncRegR();
 int Z80_IsEvenParity(byte x);
 word Z80_FetchWord();
 void Z80_PushWord(word value);
+word Z80_PopWord();
 byte Z80_FetchByte();
 int Z80_ExecuteOpcode(byte opcode);
+int Z80_ExecuteEXTDOpcode();
 
 #endif
