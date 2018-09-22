@@ -16,8 +16,6 @@
 
 int DEBUG;
 
-int UNOP;
-
 /*Region	    Maps to
   $0000-$03ff	ROM (unpaged)
   $0400-$3fff	ROM mapper slot 0
