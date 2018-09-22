@@ -1,11 +1,22 @@
 #include "emu.h"
 
-int main()
+int main(int argc, char *argv[])
 {
+
+  DEBUG = 0;
+  char deb[6];
+  strcpy(deb, "debug");
+  if(argc == 2)
+  {
+    if(strcmp(argv[1], deb) == 0)
+    {
+      DEBUG = 1;
+    }
+  }
 
   sfVideoMode mode = {256, 240, 32};
 
-  window = sfRenderWindow_create(mode, "Seb70 - Master System Emulator", sfClose, NULL);
+  window = sfRenderWindow_create(mode, "Gui0x52 - Master System Emulator", sfClose, NULL);
 
   sfClock* clock;
 
@@ -395,7 +406,7 @@ byte EMU_ReadMem(word address)
     }
   }
 
-  smsMemory[address];
+  return smsMemory[address];
 }
 
 byte EMU_ReadIO(byte address)

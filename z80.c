@@ -1519,7 +1519,28 @@ int Z80_ExecuteOpcode(byte opcode)
       getchar();
       break;
     }
+
   }
+
+  if(DEBUG)
+  {
+    printf("Opcode : 0x%X\n", opcode);
+    printf("AF = 0x%X\n", registerAF.reg);
+    printf("BC = 0x%X\n", registerBC.reg);
+    printf("DE = 0x%X\n", registerDE.reg);
+    printf("HL = 0x%X\n", registerHL.reg);
+    printf("PC = 0x%X\n", programCounter);
+    printf("SP = 0x%X\n", stackPointer);
+    printf("C_Flag = %d\n", BIT_ByteCheck(registerAF.lo, C_Flag));
+    printf("N_Flag = %d\n", BIT_ByteCheck(registerAF.lo, N_Flag));
+    printf("PV_Flag = %d\n", BIT_ByteCheck(registerAF.lo, PV_Flag));
+    printf("H_Flag = %d\n", BIT_ByteCheck(registerAF.lo, H_Flag));
+    printf("Z_Flag = %d\n", BIT_ByteCheck(registerAF.lo, Z_Flag));
+    printf("S_Flag = %d\n", BIT_ByteCheck(registerAF.lo, S_Flag));
+
+    getchar();
+  }
+  
   return OpcodeClicks;
 }
 
@@ -1634,6 +1655,11 @@ int Z80_ExecuteEXTDOpcode()
       getchar();
       break;
     }
+  }
+
+  if(DEBUG)
+  {
+    printf("EXTD Opcode : 0x%X\n", opcode);
   }
 
   return OpcodeClicks;
