@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     if(strcmp(argv[1], deb) == 0)
     {
       DEBUG = 1;
+      freopen("output.txt", "w", stdout);
     }
   }
 
