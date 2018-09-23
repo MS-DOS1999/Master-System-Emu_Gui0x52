@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("zexall.sms");
+  EMU_LoadRom("sokoban.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -91,6 +91,7 @@ void EMU_Init()
   ResetInt = 0;
   ExecuteReset = 0;
   IntMode = 1;
+  EIPending = 0;
 
   isCodeMaster = 0;
   oneMegaCartridge = 0;

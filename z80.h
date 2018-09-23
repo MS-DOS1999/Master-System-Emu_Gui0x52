@@ -79,6 +79,7 @@ int IntMode;
 byte IFF1;
 byte IFF2;
 byte Halted;
+byte EIPending;
 
 void Z80_UpdateInterrupts();
 int Z80_ExecuteInstruction();
@@ -90,5 +91,7 @@ word Z80_PopWord();
 byte Z80_FetchByte();
 int Z80_ExecuteOpcode(byte opcode);
 int Z80_ExecuteEXTDOpcode();
+int Z80_ExecuteIYOpcode();
+int Z80_ExecuteBITSOpcode();
 
 #endif

@@ -328,7 +328,7 @@ void TMS_Init()
 	HCounter = 0;
 	VCounter = 0;
 	VCounterFirst = 1;
-	lineInterrupt = 0;
+	lineInterrupt = 0xFF;
 
 	memset(screenSmall, 1, sizeof(screenSmall));
 	memset(screenMedium, 1, sizeof(screenMedium));
