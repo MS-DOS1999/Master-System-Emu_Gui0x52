@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
   sfTexture* screenTex;
   sfSprite* screenSpr;
 
-  screenImg = sfImage_createFromColor(256, 240, sfWhite);
+  screenImg = sfImage_createFromColor(256, 240, sfBlack);
   screenTex = sfTexture_createFromImage(screenImg, NULL);
   screenSpr = sfSprite_create();
   sfSprite_setTexture(screenSpr, screenTex, sfTrue);
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("sokoban.sms");
+  EMU_LoadRom("output.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     if((lastFrameTime + VdpUpdateInterval) <= currentTime)
     {
       lastFrameTime = currentTime;
-
+      
       EMU_Update();
 
       EMU_Render(screenImg, screenTex, screenSpr);
@@ -60,9 +60,9 @@ int main(int argc, char *argv[])
 
 void EMU_Init()
 {
-  memset(smsMemory, 0, sizeof(smsMemory));
-  memset(gameMemory, 0, sizeof(gameMemory));
-  memset(ramBank, 0, sizeof(ramBank));
+  memset(&smsMemory, 0, sizeof(smsMemory));
+  memset(&gameMemory, 0, sizeof(gameMemory));
+  memset(&ramBank, 0, sizeof(ramBank));
 
   registerAF.reg = 0x0000;
   registerBC.reg = 0x0000;
@@ -119,6 +119,7 @@ void EMU_Update()
   const double SmsClicksPerFrame = 10738580 / 60;
   unsigned int clicksInUpdate = 0;
 
+  TMS_ResetScreen();
   //on emule donc le nombre de clicks dans SmsClicksPerFrame par frame
   while(clicksInUpdate < SmsClicksPerFrame)
   {
@@ -143,58 +144,62 @@ void EMU_Update()
 void EMU_Render(sfImage* screenImg, sfTexture* screenTex, sfSprite* screenSpr)
 {
 
-  if(tmsHeight == NUM_RES_VERT_SMALL)
+  if(!ScreenDisabled)
   {
-    for(int y = 0; y < 192; y++)
+    if(tmsHeight == NUM_RES_VERT_SMALL)
     {
-      for(int x = 0; x < 256; x++)
+      for(int y = 0; y < 192; y++)
       {
-        sfColor color;
-        color.r = screenSmall[x][y][0];
-        color.g = screenSmall[x][y][1];
-        color.b = screenSmall[x][y][2];
-        color.a = 0;
-        sfImage_setPixel(screenImg, x, y, color);
+        for(int x = 0; x < 256; x++)
+        {
+          sfColor color;
+          color.r = screenSmall[x][y][0];
+          color.g = screenSmall[x][y][1];
+          color.b = screenSmall[x][y][2];
+          color.a = 255;
+          sfImage_setPixel(screenImg, x, y, color);
+        }
       }
     }
-  }
-  else if(tmsHeight == NUM_RES_VERT_MED)
-  {
-    for(int y = 0; y < 224; y++)
+    else if(tmsHeight == NUM_RES_VERT_MED)
     {
-      for(int x = 0; x < 256; x++)
+      for(int y = 0; y < 224; y++)
       {
-        sfColor color;
-        color.r = screenMedium[x][y][0];
-        color.g = screenMedium[x][y][1];
-        color.b = screenMedium[x][y][2];
-        color.a = 0;
-        sfImage_setPixel(screenImg, x, y, color);
+        for(int x = 0; x < 256; x++)
+        {
+          sfColor color;
+          color.r = screenMedium[x][y][0];
+          color.g = screenMedium[x][y][1];
+          color.b = screenMedium[x][y][2];
+          color.a = 255;
+          sfImage_setPixel(screenImg, x, y, color);
+        }
       }
     }
-  }
-  else if(tmsHeight == NUM_RES_VERT_HIGH)
-  {
-    for(int y = 0; y < 240; y++)
+    else if(tmsHeight == NUM_RES_VERT_HIGH)
     {
-      for(int x = 0; x < 256; x++)
+      for(int y = 0; y < 240; y++)
       {
-        sfColor color;
-        color.r = screenHigh[x][y][0];
-        color.g = screenHigh[x][y][1];
-        color.b = screenHigh[x][y][2];
-        color.a = 0;
-        sfImage_setPixel(screenImg, x, y, color);
+        for(int x = 0; x < 256; x++)
+        {
+          sfColor color;
+          color.r = screenHigh[x][y][0];
+          color.g = screenHigh[x][y][1];
+          color.b = screenHigh[x][y][2];
+          color.a = 255;
+          sfImage_setPixel(screenImg, x, y, color);
+        }
       }
     }
+    sfTexture_updateFromImage(screenTex, screenImg, 0, 0);
+    sfSprite_setTexture(screenSpr, screenTex, sfTrue);
+
+    sfRenderWindow_clear(window, sfBlack);
+    sfRenderWindow_drawSprite(window, screenSpr, NULL);
+    sfRenderWindow_display(window);
   }
 
-  sfTexture_updateFromImage(screenTex, screenImg, 0, 0);
-  sfSprite_setTexture(screenSpr, screenTex, sfTrue);
-
-  sfRenderWindow_clear(window, sfBlack);
-  sfRenderWindow_drawSprite(window, screenSpr, NULL);
-  sfRenderWindow_display(window);
+  
 }
 
 void EMU_LoadRom(const char* romName)
@@ -424,8 +429,15 @@ byte EMU_ReadIO(byte address)
     {
       return VCounter;
     }
-
-    return HCounter;
+    if(address == 0x7F)
+    {
+      //hcounter
+      word mod = HCounter & 511;
+      mod >> 1;
+      byte res = mod & 0xFFFF;
+      return res;
+    }
+    return 0;
   }
 
   if((address >= 0x80) && (address < 0xC0))

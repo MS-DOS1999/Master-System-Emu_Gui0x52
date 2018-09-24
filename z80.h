@@ -2,6 +2,7 @@
 #define Z80_H
 
 #include <stdio.h>
+#include <windows.h>
 #include "oldSize.h"
 #include "emu.h"
 #include "tms.h"

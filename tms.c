@@ -1,7 +1,23 @@
 #include "tms.h"
 
-void TMS_WriteAddress(byte data)
+void TMS_ResetScreen()
 {
+	if (tmsHeight == NUM_RES_VERT_SMALL)
+	{
+		memset(&screenSmall, 1, sizeof(screenSmall));
+	}
+	else if (tmsHeight == NUM_RES_VERT_MED)
+	{
+		memset(&screenMedium, 1, sizeof(screenMedium));
+	}
+	else if (tmsHeight == NUM_RES_VERT_HIGH)
+	{
+		memset(&screenHigh, 1, sizeof(screenHigh));
+	}
+}
+
+void TMS_WriteAddress(byte data)
+{	
 	if(isSecondWrite) //on update le hi
 	{
 		controlWord &= 0xFF;
@@ -121,7 +137,12 @@ byte TMS_ReadDataPort()
 
 	byte res = readBuffer;
 
-	readBuffer = videoMemory[TMS_GetAddressRegister()];
+	byte code = TMS_GetCodeRegister();
+
+	if(code == 0 || code == 1)
+	{
+		readBuffer = videoMemory[TMS_GetAddressRegister()];
+	}
 
 	TMS_IncrementAddress();
 
@@ -165,17 +186,20 @@ word TMS_GetNTBase()
 
 byte TMS_GetColorShade(byte value)
 {
+	byte res = 0;
 	switch(value)
 	{
-		case 0: return 0;   break;
-		case 1: return 85;  break;
-		case 2: return 170; break;
-		case 3: return 255; break;
+		case 0: res = 0;   break;
+		case 1: res = 85;  break;
+		case 2: res = 170; break;
+		case 3: res = 255; break;
 	}
+	return res;
 }
 
 void TMS_WritePixel(byte x, byte y, byte red, byte green, byte blue)
 {
+
 	if(tmsHeight == NUM_RES_VERT_SMALL)
 	{
 		screenSmall[x][y][0] = red;
@@ -305,7 +329,7 @@ void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue)
 
 void TMS_Init()
 {
-	isVblank = 0;
+	
 	isSecondWrite = 0;
 	tmsStatus = 0;
 	tmsIrq = 0;
@@ -314,9 +338,9 @@ void TMS_Init()
 	tmsWidth = NUM_RES_HORIZONTAL;
 	tmsHeight = NUM_RES_VERT_SMALL;
 
-	memset(videoMemory, 0, sizeof(videoMemory));
-	memset(paletteMemory, 0, sizeof(paletteMemory));
-	memset(tmsRegister, 0, sizeof(tmsRegister));
+	memset(&videoMemory, 0, sizeof(videoMemory));
+	memset(&paletteMemory, 0, sizeof(paletteMemory));
+	memset(&tmsRegister, 0, sizeof(tmsRegister));
 
 	tmsRegister[0x2] = 0xFF;
 	tmsRegister[0x3] = 0xFF;
@@ -329,10 +353,11 @@ void TMS_Init()
 	VCounter = 0;
 	VCounterFirst = 1;
 	lineInterrupt = 0xFF;
+	ScreenDisabled = 1;
 
-	memset(screenSmall, 1, sizeof(screenSmall));
-	memset(screenMedium, 1, sizeof(screenMedium));
-	memset(screenHigh, 1, sizeof(screenHigh));
+	memset(&screenSmall, 1, sizeof(screenSmall));
+	memset(&screenMedium, 1, sizeof(screenMedium));
+	memset(&screenHigh, 1, sizeof(screenHigh));
 }
 
 void TMS_Update(float nextCycle)
@@ -340,7 +365,6 @@ void TMS_Update(float nextCycle)
 	tmsIrq = 0;
 	word hcount = HCounter;
 	byte nextline = 0;
-	isVblank = 0;
 
 	tmsRunningCycles += nextCycle;
 
@@ -367,14 +391,13 @@ void TMS_Update(float nextCycle)
 			VCounterFirst = 1;
 			TMS_Render();
 		}
-		else if((vcount == TMS_GetVJump()) && VCounterFirst)
+		else if((VCounter == TMS_GetVJump()) && VCounterFirst)
 		{
 			VCounterFirst = 0;
 			VCounter = TMS_GetVJumpTo();
 		}
 		else if(VCounter == tmsHeight) //vert refresh ?
 		{
-			isVblank = 1;
 			BIT_ByteSet(&tmsStatus, 7); //irq pending
 		}
 
@@ -406,6 +429,7 @@ void TMS_Update(float nextCycle)
 
 		if(VCounter < tmsHeight)
 		{
+			ScreenDisabled = !BIT_ByteCheck(tmsRegister[1], 6);
 			TMS_Render();
 		}
 
@@ -417,6 +441,8 @@ void TMS_Update(float nextCycle)
 			{
 				underflow = 1;
 			}
+
+			lineInterrupt--;
 
 			if(underflow)
 			{
@@ -705,7 +731,6 @@ void TMS_Sprite4()
 
 void TMS_Background2()
 {
-
 	// reg 3 contains colour table info
 	// reg 4 contains the pattern table info
 	// if bit 2 is set of reg 4 the pattern table address starts at 0x2000 otherwise 0x0
@@ -812,7 +837,6 @@ void TMS_Background2()
 
 void TMS_Background4()
 {
-
 	word ntBase = TMS_GetNTBase();
 	byte HScroll = tmsRegister[0x8];
 
@@ -950,13 +974,13 @@ void TMS_Background4()
 			byte color = paletteMemory[palette];
 
 			byte red = color & 0x3;
-	   		color >>=2;
+	   		color >>= 2;
 	   		byte green = color & 0x3;
-	   		color >>=2;
+	   		color >>= 2;
 	   		byte blue = color & 0x3;
 
 	   		if(!masking && !hiPriority && (TMS_GetPixelColor(xpos, VCounter, 0) != 1))
-	   		{
+	   		{	
 	   			continue;
 	   		}
 

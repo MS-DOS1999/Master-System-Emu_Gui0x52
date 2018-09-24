@@ -141,8 +141,6 @@ byte VCounterFirst;
 byte lineInterrupt;
 byte VScroll;
 
-byte isVblank;
-
 byte tmsIrq;
 
 float tmsRunningCycles;
@@ -152,8 +150,9 @@ word tmsWidth;
 
 byte tmsIsPal;
 
+byte ScreenDisabled;
 
-
+void TMS_ResetScreen();
 void TMS_WriteAddress(byte data);
 void TMS_IncrementAddress();
 word TMS_GetAddressRegister();
