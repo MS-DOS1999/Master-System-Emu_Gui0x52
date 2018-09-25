@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("output.sms");
+  EMU_LoadRom("Sonic the Hedgehog.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -123,6 +123,7 @@ void EMU_Update()
   //on emule donc le nombre de clicks dans SmsClicksPerFrame par frame
   while(clicksInUpdate < SmsClicksPerFrame)
   {
+
     int z80Clicks = Z80_ExecuteInstruction();
 
     Z80_UpdateInterrupts();
@@ -137,6 +138,7 @@ void EMU_Update()
     //SN_Update();
 
     clicksInUpdate += smsClicks;
+
   }
 
 }

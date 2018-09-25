@@ -362,6 +362,7 @@ void TMS_Init()
 
 void TMS_Update(float nextCycle)
 {
+
 	tmsIrq = 0;
 	word hcount = HCounter;
 	byte nextline = 0;
@@ -473,6 +474,7 @@ byte TMS_GetMode()
 
 void TMS_Render()
 {
+
 	byte mode = TMS_GetMode();
 
 	if(mode == 2)
@@ -609,6 +611,7 @@ void TMS_DrawSprite2(word address, byte x, byte line, byte color)
 
 void TMS_Sprite4()
 {
+
 	int spriteCount = 0;
 	word satbase = TMS_GetSATBase();
 
@@ -710,7 +713,7 @@ void TMS_Sprite4()
 				bit = BIT_ByteCheck(data1, col);
 				palette |= bit;
 
-				if(palette = 0)
+				if(palette == 0)
 				{
 					continue;
 				}
@@ -837,6 +840,7 @@ void TMS_Background2()
 
 void TMS_Background4()
 {
+
 	word ntBase = TMS_GetNTBase();
 	byte HScroll = tmsRegister[0x8];
 
@@ -862,7 +866,7 @@ void TMS_Background4()
 			int xpixel = x;
 
 			byte allowHScroll = ((row > 1) || !limitHScroll) ? 1 : 0;
-
+			
 			int i = x;
 
 			i += column * 8;
@@ -978,7 +982,7 @@ void TMS_Background4()
 	   		byte green = color & 0x3;
 	   		color >>= 2;
 	   		byte blue = color & 0x3;
-
+	   		
 	   		if(!masking && !hiPriority && (TMS_GetPixelColor(xpos, VCounter, 0) != 1))
 	   		{	
 	   			continue;

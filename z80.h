@@ -94,5 +94,8 @@ int Z80_ExecuteOpcode(byte opcode);
 int Z80_ExecuteEXTDOpcode();
 int Z80_ExecuteIYOpcode();
 int Z80_ExecuteBITSOpcode();
+int Z80_ExecuteIYBITSOpcode();
+int Z80_ExecuteIXOpcode();
+int Z80_ExecuteIXBITSOpcode();
 
 #endif
