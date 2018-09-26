@@ -3233,8 +3233,11 @@ int Z80_ExecuteOpcode(byte opcode)
 
     default:
     {
-      printf("Unimplemented Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
 
@@ -3435,6 +3438,12 @@ int Z80_ExecuteEXTDOpcode()
       OpcodeClicks = 12;
       break;
     }
+    case 0x79:
+    {
+      EMU_WriteIO(registerBC.lo, registerAF.hi);
+      OpcodeClicks = 12;
+      break;
+    }
     case 0xA3:
     {
       EMU_WriteIO(registerBC.lo, EMU_ReadMem(registerHL.reg));
@@ -3500,8 +3509,11 @@ int Z80_ExecuteEXTDOpcode()
 
     default:
     {
-      printf("Unimplemented EXTD Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented EXTD Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
   }
@@ -3636,8 +3648,11 @@ int Z80_ExecuteIYOpcode()
     }
     default:
     {
-      printf("Unimplemented IY Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented IY Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
   }
@@ -4143,8 +4158,11 @@ int Z80_ExecuteBITSOpcode()
     }
     default:
     {
-      printf("Unimplemented BITS Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented BITS Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
   }
@@ -4386,8 +4404,11 @@ int Z80_ExecuteIYBITSOpcode()
     }
     default:
     {
-      printf("Unimplemented IY BITS Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented IY BITS Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
   }
@@ -4716,8 +4737,11 @@ int Z80_ExecuteIXOpcode()
     }
     default:
     {
-      printf("Unimplemented IX Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented IX Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
   }
@@ -4867,8 +4891,11 @@ int Z80_ExecuteIXBITSOpcode()
     }
     default:
     {
-      printf("Unimplemented IX BITS Opcode : 0x%X\n", opcode);
-      getchar();
+      if(UNOP)
+      {
+        printf("Unimplemented IX BITS Opcode : 0x%X\n", opcode);
+        getchar();
+      }
       break;
     }
   }

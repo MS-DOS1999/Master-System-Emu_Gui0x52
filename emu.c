@@ -6,12 +6,20 @@ int main(int argc, char *argv[])
   DEBUG = 0;
   char deb[6];
   strcpy(deb, "debug");
+
+  char unop[6];
+  strcpy(unop, "unop");
+
   if(argc == 2)
   {
     if(strcmp(argv[1], deb) == 0)
     {
       DEBUG = 1;
       freopen("output.txt", "w", stdout);
+    }
+    else if(strcmp(argv[1], unop) == 0)
+    {
+      UNOP = 1;
     }
   }
 
@@ -34,7 +42,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("Sonic the Hedgehog.sms");
+  EMU_LoadRom("zexall.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 

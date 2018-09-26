@@ -15,6 +15,7 @@
 #include "tms.h"
 
 int DEBUG;
+int UNOP;
 
 /*Region	    Maps to
   $0000-$03ff	ROM (unpaged)
