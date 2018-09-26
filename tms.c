@@ -374,6 +374,11 @@ void TMS_Update(float nextCycle)
 	//le hcounter avance à la vitesse de la machine et pas celui du tms
 	int cycles = clockInfo * 2;
 
+	if(DEBUG)
+	{
+		printf("hcount + cycles = %d\n\n", (hcount + cycles));
+	}
+
 	if((hcount + cycles) > 684)
 	{
 		nextline = 1;
@@ -460,6 +465,8 @@ void TMS_Update(float nextCycle)
 	{
 		tmsIrq = 1;
 	}
+
+	tmsRunningCycles -= clockInfo;
 }
 
 byte TMS_GetMode()
