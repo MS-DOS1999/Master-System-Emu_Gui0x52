@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("zexall.sms");
+  EMU_LoadRom("zexall.sms"); //d0
 
   const double VdpUpdateInterval = 1000/FPS;
 
