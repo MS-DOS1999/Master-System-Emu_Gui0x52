@@ -424,7 +424,6 @@ int Z80_ExecuteOpcode(byte opcode)
     case 0x10:
     {
       signed_byte ldValue = (signed_byte)Z80_FetchByte();
-      programCounter+=1;
       registerBC.hi -=1;
       OpcodeClicks = 8;
       if(registerBC.hi != 0)
@@ -432,6 +431,7 @@ int Z80_ExecuteOpcode(byte opcode)
         programCounter += ldValue;
         OpcodeClicks = 13;
       }
+      programCounter+=1;
       break;
     }
     case 0x11:
@@ -6618,6 +6618,12 @@ int Z80_ExecuteIYOpcode()
       OpcodeClicks = 20;
       break;
     }
+    case 0x2B:
+    {
+      registerIY.reg--;
+      OpcodeClicks = 10;
+      break;
+    }
     case 0x2E:
     {
       byte ldValue = Z80_FetchByte();
@@ -6718,6 +6724,14 @@ int Z80_ExecuteIYOpcode()
       break;
 
     }
+    case 0x46:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+      registerBC.hi = EMU_ReadMem((registerIY.reg + (word)ldValue));
+      OpcodeClicks = 19;
+      break;
+    }
     case 0x4E:
     {
       byte ldValue = Z80_FetchByte();
@@ -6742,11 +6756,29 @@ int Z80_ExecuteIYOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x66:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+      registerHL.hi = EMU_ReadMem((registerIY.reg + (word)ldValue));
+      OpcodeClicks = 19;
+      break;
+    }
     case 0x6E:
     {
       byte ldValue = Z80_FetchByte();
       programCounter++;
       registerHL.lo = EMU_ReadMem((registerIY.reg + (word)ldValue));
+      OpcodeClicks = 19;
+      break;
+    }
+    case 0x70:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+
       OpcodeClicks = 19;
       break;
     }
@@ -6756,6 +6788,46 @@ int Z80_ExecuteIYOpcode()
       programCounter++;
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+
+      OpcodeClicks = 19;
+      break;
+    }
+    case 0x72:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+
+      OpcodeClicks = 19;
+      break;
+    }
+    case 0x73:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+
+      OpcodeClicks = 19;
+      break;
+    }
+    case 0x74:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+
+      OpcodeClicks = 19;
+      break;
+    }
+    case 0x75:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
 
       OpcodeClicks = 19;
       break;
@@ -7646,6 +7718,25 @@ int Z80_ExecuteBITSOpcode()
       OpcodeClicks = 8;
       break;
     }
+    case 0x46:
+    {
+      byte isTrue = BIT_ByteCheck(EMU_ReadMem(registerHL.reg), 0);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      OpcodeClicks = 12;
+      break;
+    }
     case 0x47:
     {
       byte isTrue = BIT_ByteCheck(registerAF.hi, 0);
@@ -7665,9 +7756,87 @@ int Z80_ExecuteBITSOpcode()
       OpcodeClicks = 8;
       break;
     }
+    case 0x48:
+    {
+      byte isTrue = BIT_ByteCheck(registerBC.hi, 1);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x4E:
+    {
+      byte isTrue = BIT_ByteCheck(EMU_ReadMem(registerHL.reg), 1);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      OpcodeClicks = 12;
+      break;
+    }
     case 0x4F:
     {
       byte isTrue = BIT_ByteCheck(registerAF.hi, 1);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x57:
+    {
+      byte isTrue = BIT_ByteCheck(registerAF.hi, 2);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x67:
+    {
+      byte isTrue = BIT_ByteCheck(registerAF.hi, 4);
 
       BIT_ByteClear(&registerAF.lo, N_Flag);
 
@@ -7722,6 +7891,66 @@ int Z80_ExecuteBITSOpcode()
         BIT_ByteSet(&registerAF.lo, Z_Flag);
       }
 
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x7E:
+    {
+      byte isTrue = BIT_ByteCheck(EMU_ReadMem(registerHL.reg), 7);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+
+      OpcodeClicks = 12;
+      break;
+    }
+    case 0x7F:
+    {
+      byte isTrue = BIT_ByteCheck(registerAF.hi, 7);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      BIT_ByteSet(&registerAF.lo, H_Flag);
+
+      if(isTrue)
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x96:
+    {
+      byte memValue = EMU_ReadMem(registerHL.reg);
+      BIT_ByteClear(&memValue, 2);
+      EMU_WriteMem(registerHL.reg, memValue);
+      OpcodeClicks = 15;
+      break;
+    }
+    case 0xB7:
+    {
+      BIT_ByteClear(&registerAF.hi, 6);
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0xF7:
+    {
+      BIT_ByteSet(&registerAF.hi, 6);
       OpcodeClicks = 8;
       break;
     }
@@ -8288,6 +8517,60 @@ int Z80_ExecuteIXOpcode()
 
   switch(opcode)
   {
+    case 0x09:
+    {
+      if(registerIX.reg + registerBC.reg > 0xFFFF)
+      {
+        BIT_ByteSet(&registerAF.lo, C_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, C_Flag);
+      }
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      if(((registerIX.reg & 0x0FFF) + (registerBC.reg & 0x0FFF)) > 0x0FFF)
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.reg += registerBC.reg;
+
+      OpcodeClicks = 15;
+      break;
+    }
+    case 0x19:
+    {
+      if(registerIX.reg + registerDE.reg > 0xFFFF)
+      {
+        BIT_ByteSet(&registerAF.lo, C_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, C_Flag);
+      }
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      if(((registerIX.reg & 0x0FFF) + (registerDE.reg & 0x0FFF)) > 0x0FFF)
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.reg += registerDE.reg;
+
+      OpcodeClicks = 15;
+      break;
+    }
     case 0x21:
     {
       word ldValue = Z80_FetchWord();
@@ -8311,12 +8594,129 @@ int Z80_ExecuteIXOpcode()
       OpcodeClicks = 10;
       break;
     }
+    case 0x24:
+    {
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      signed_byte svalue = (signed_byte)registerIX.hi;
+      if(svalue == 127)
+      {
+        BIT_ByteSet(&registerAF.lo, PV_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, PV_Flag);
+      }
+
+      if((((registerIX.hi & 0xF0) + 1) & 0x10))
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.hi+=1;
+
+      if(registerIX.hi == 0)
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+
+      if(BIT_ByteCheck(registerIX.hi, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, S_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, S_Flag);
+      }
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x25:
+    {
+      BIT_ByteSet(&registerAF.lo, N_Flag);
+
+      signed_byte svalue = (signed_byte)registerIX.hi;
+      if(svalue == -128)
+      {
+        BIT_ByteSet(&registerAF.lo, PV_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, PV_Flag);
+      }
+
+      if(((registerIX.hi & 0xF0) - 1) < 0)
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.hi-=1;
+
+      if(registerIX.hi == 0)
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+
+      if(BIT_ByteCheck(registerIX.hi, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, S_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, S_Flag);
+      }
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x26:
     {
       byte ldValue = Z80_FetchByte();
       programCounter++;
       registerIX.hi = ldValue;
       OpcodeClicks = 11;
+      break;
+    }
+    case 0x29:
+    {
+      if(registerIX.reg + registerIX.reg > 0xFFFF)
+      {
+        BIT_ByteSet(&registerAF.lo, C_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, C_Flag);
+      }
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      if(((registerIX.reg & 0x0FFF) + (registerIX.reg & 0x0FFF)) > 0x0FFF)
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.reg += registerIX.reg;
+
+      OpcodeClicks = 15;
       break;
     }
     case 0x2A:
@@ -8332,6 +8732,96 @@ int Z80_ExecuteIXOpcode()
     {
       registerIX.reg--;
       OpcodeClicks = 10;
+      break;
+    }
+    case 0x2C:
+    {
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      signed_byte svalue = (signed_byte)registerIX.lo;
+      if(svalue == 127)
+      {
+        BIT_ByteSet(&registerAF.lo, PV_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, PV_Flag);
+      }
+
+      if((((registerIX.lo & 0xF0) + 1) & 0x10))
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.lo+=1;
+
+      if(registerIX.lo == 0)
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+
+      if(BIT_ByteCheck(registerIX.lo, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, S_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, S_Flag);
+      }
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x2D:
+    {
+      BIT_ByteSet(&registerAF.lo, N_Flag);
+
+      signed_byte svalue = (signed_byte)registerIX.lo;
+      if(svalue == -128)
+      {
+        BIT_ByteSet(&registerAF.lo, PV_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, PV_Flag);
+      }
+
+      if(((registerIX.lo & 0xF0) - 1) < 0)
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.lo-=1;
+
+      if(registerIX.lo == 0)
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+
+      if(BIT_ByteCheck(registerIX.lo, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, S_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, S_Flag);
+      }
+      OpcodeClicks = 8;
       break;
     }
     case 0x2E:
@@ -8456,6 +8946,33 @@ int Z80_ExecuteIXOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x39:
+    {
+      if(registerIX.reg + stackPointer > 0xFFFF)
+      {
+        BIT_ByteSet(&registerAF.lo, C_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, C_Flag);
+      }
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      if(((registerIX.reg & 0x0FFF) + (stackPointer & 0x0FFF)) > 0x0FFF)
+      {
+        BIT_ByteSet(&registerAF.lo, H_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, H_Flag);
+      }
+
+      registerIX.reg += stackPointer;
+
+      OpcodeClicks = 15;
+      break;
+    }
     case 0x46:
     {
       byte ldValue = Z80_FetchByte();
@@ -8501,6 +9018,14 @@ int Z80_ExecuteIXOpcode()
       byte ldValue = Z80_FetchByte();
       programCounter++;
       registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+      OpcodeClicks = 19;
+      break;
+    }
+    case 0x70:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
       OpcodeClicks = 19;
       break;
     }
@@ -8878,6 +9403,61 @@ int Z80_ExecuteIXBITSOpcode()
 
   switch(opcode)
   {
+    case 0x00:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      registerBC.hi <<= 1;
+
+      if(BIT_ByteCheck(registerBC.hi, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, C_Flag);
+        BIT_ByteSet(&registerBC.hi, 0);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, C_Flag);
+        BIT_ByteClear(&registerBC.hi, 0);
+      }
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+      BIT_ByteClear(&registerAF.lo, H_Flag);
+
+      if(Z80_IsEvenParity(registerBC.hi))
+      {
+        BIT_ByteSet(&registerAF.lo, PV_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, PV_Flag);
+      }
+
+      if(registerBC.hi == 0)
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+
+      if(BIT_ByteCheck(registerBC.hi, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, S_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, S_Flag);
+      }
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+
+      OpcodeClicks = 23;
+      break;
+    }
     case 0x01:
     {
       byte ldValue = Z80_FetchByte();

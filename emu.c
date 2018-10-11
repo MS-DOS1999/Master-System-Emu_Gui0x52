@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-
+  sfEvent event;
   DEBUG = 0;
   char deb[6];
   strcpy(deb, "debug");
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("zexall.sms"); //d0
+  EMU_LoadRom("zexall.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -50,6 +50,16 @@ int main(int argc, char *argv[])
 
   while(sfRenderWindow_isOpen(window)) //emu loop
   {
+
+    while (sfRenderWindow_pollEvent(window, &event))
+    {
+      /* Close window : exit */
+      if (event.type == sfEvtClosed)
+      {
+          sfRenderWindow_close(window);
+      }
+    }
+
     double currentTime = sfTime_asMilliseconds(sfClock_getElapsedTime(clock));
 
     //on draw une frame toutes les 1/60 secondes
