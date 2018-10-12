@@ -48,8 +48,8 @@ The carry flag is set when the instruction overflows its upper or lower limits.*
 word programCounter;
 word stackPointer;
 
-word registerI;
-word registerR;
+byte registerI;
+byte registerR;
 
 typedef union
 {
