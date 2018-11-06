@@ -101,6 +101,933 @@ byte Z80_FetchByte()
   return EMU_ReadMem(programCounter);
 }
 
+int Z80_BitsRlc(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue <<= 1;
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+      BIT_ByteSet(&memValue, 0);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+      BIT_ByteClear(&memValue, 0);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+    *reg <<= 1;
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+      BIT_ByteSet(&*reg, 0);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+      BIT_ByteClear(&*reg, 0);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsRrc(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue >>= 1;
+
+    if(BIT_ByteCheck(memValue, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+      BIT_ByteSet(&memValue, 7);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+      BIT_ByteClear(&memValue, 7);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+    *reg >>= 1;
+
+    if(BIT_ByteCheck(*reg, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+      BIT_ByteSet(&*reg, 7);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+      BIT_ByteClear(&*reg, 7);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsRl(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue <<= 1;
+
+    byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    if(carry)
+    {
+      BIT_ByteSet(&memValue, 0);
+    }
+    else
+    {
+      BIT_ByteClear(&memValue, 0);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+    *reg <<= 1;
+
+    byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    if(carry)
+    {
+      BIT_ByteSet(&*reg, 0);
+    }
+    else
+    {
+      BIT_ByteClear(&*reg, 0);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsRr(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue >>= 1;
+
+    byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
+
+    if(BIT_ByteCheck(memValue, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    if(carry)
+    {
+      BIT_ByteSet(&memValue, 7);
+    }
+    else
+    {
+      BIT_ByteClear(&memValue, 7);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+
+    *reg >>= 1;
+
+    byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
+
+    if(BIT_ByteCheck(*reg, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    if(carry)
+    {
+      BIT_ByteSet(&*reg, 7);
+    }
+    else
+    {
+      BIT_ByteClear(&*reg, 7);
+    }
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsSla(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue <<= 1;
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    BIT_ByteClear(&memValue, 0);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+
+    *reg <<= 1;
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    BIT_ByteClear(&*reg, 0);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsSra(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+
+    byte memValue = EMU_ReadMem(*memReg);
+
+    byte sevenbit = BIT_ByteCheck(memValue, 7);
+
+    memValue >>= 1;
+
+    if(BIT_ByteCheck(memValue, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    if(sevenbit)
+    {
+      BIT_ByteSet(&memValue, 7);
+    }
+    else
+    {
+      BIT_ByteClear(&memValue, 7);
+    } 
+
+    BIT_ByteClear(&memValue, 0);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+
+    byte sevenbit = BIT_ByteCheck(*reg, 7);
+
+    *reg >>= 1;
+
+    if(BIT_ByteCheck(*reg, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    if(sevenbit)
+    {
+      BIT_ByteSet(&*reg, 7);
+    }
+    else
+    {
+      BIT_ByteClear(&*reg, 7);
+    }    
+
+    BIT_ByteClear(&*reg, 0);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsSll(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue <<= 1;
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    BIT_ByteSet(&memValue, 0);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+
+    *reg <<= 1;
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    BIT_ByteSet(&*reg, 0);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsSrl(byte *reg, int OpcodeClicks, int isMem, word *memReg)
+{
+
+  if(isMem)
+  {
+
+    byte memValue = EMU_ReadMem(*memReg);
+
+    memValue >>= 1;
+
+    if(BIT_ByteCheck(memValue, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    BIT_ByteClear(&memValue, 7);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(memValue))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(memValue == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(memValue, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+
+    EMU_WriteMem(*memReg, memValue);
+  }
+  else
+  {
+
+    *reg >>= 1;
+
+    if(BIT_ByteCheck(*reg, 0))
+    {
+      BIT_ByteSet(&registerAF.lo, C_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, C_Flag);
+    }
+
+    BIT_ByteClear(&*reg, 7);
+
+    BIT_ByteClear(&registerAF.lo, N_Flag);
+
+    if(Z80_IsEvenParity(*reg))
+    {
+      BIT_ByteSet(&registerAF.lo, PV_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, PV_Flag);
+    }
+
+    BIT_ByteClear(&registerAF.lo, H_Flag);
+
+    if(*reg == 0)
+    {
+      BIT_ByteSet(&registerAF.lo, Z_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, Z_Flag);
+    }
+
+    if(BIT_ByteCheck(*reg, 7))
+    {
+      BIT_ByteSet(&registerAF.lo, S_Flag);
+    }
+    else
+    {
+      BIT_ByteClear(&registerAF.lo, S_Flag);
+    }
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsBit(byte *reg, int bit, int OpcodeClicks)
+{
+
+  byte isTrue = BIT_ByteCheck(*reg, bit);
+
+  BIT_ByteClear(&registerAF.lo, N_Flag);
+
+  BIT_ByteSet(&registerAF.lo, H_Flag);
+
+  if(isTrue)
+  {
+    BIT_ByteClear(&registerAF.lo, Z_Flag);
+  }
+  else
+  {
+    BIT_ByteSet(&registerAF.lo, Z_Flag);
+  }
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsReset(byte *reg, int bit, int OpcodeClicks)
+{
+
+  BIT_ByteClear(&*reg, bit);
+
+  return OpcodeClicks;
+}
+
+int Z80_BitsSet(byte *reg, int bit, int OpcodeClicks)
+{
+
+  BIT_ByteSet(&*reg, bit);
+
+  return OpcodeClicks;
+}
+
+
 int Z80_ExecuteOpcode(byte opcode)
 {
   Z80_IncRegR();

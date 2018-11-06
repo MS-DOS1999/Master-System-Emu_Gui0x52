@@ -90,6 +90,19 @@ word Z80_FetchWord();
 void Z80_PushWord(word value);
 word Z80_PopWord();
 byte Z80_FetchByte();
+
+int Z80_BitsRlc(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsRrc(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsRl(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsRr(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsSla(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsSra(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsSll(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsSrl(byte *reg, int OpcodeClicks, int isMem, word *memReg);
+int Z80_BitsBit(byte *reg, int bit, int OpcodeClicks);
+int Z80_BitsReset(byte *reg, int bit, int OpcodeClicks);
+int Z80_BitsSet(byte *reg, int bit, int OpcodeClicks);
+
 int Z80_ExecuteOpcode(byte opcode);
 int Z80_ExecuteEXTDOpcode();
 int Z80_ExecuteIYOpcode();
