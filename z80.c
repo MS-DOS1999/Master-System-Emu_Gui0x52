@@ -12491,52 +12491,9 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerBC.hi <<= 1;
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerBC.hi, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerBC.hi, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerBC.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x01:
@@ -12546,52 +12503,9 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerBC.lo <<= 1;
-
-      if(BIT_ByteCheck(registerBC.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerBC.lo, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerBC.lo, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.lo))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.lo == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerBC.lo, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x02:
@@ -12601,52 +12515,9 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerDE.hi <<= 1;
-
-      if(BIT_ByteCheck(registerDE.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerDE.hi, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerDE.hi, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerDE.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerDE.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerDE.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerDE.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x03:
@@ -12656,52 +12527,21 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerDE.lo <<= 1;
-
-      if(BIT_ByteCheck(registerDE.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerDE.lo, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerDE.lo, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerDE.lo))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerDE.lo == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerDE.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerDE.lo, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x04:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
 
-      OpcodeClicks = 23;
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
       break;
     }
     case 0x05:
@@ -12711,52 +12551,9 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerHL.lo <<= 1;
-
-      if(BIT_ByteCheck(registerHL.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerHL.lo, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerHL.lo, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerHL.lo))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerHL.lo == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerHL.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerHL.lo, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x06:
@@ -12764,54 +12561,11 @@ int Z80_ExecuteIYBITSOpcode()
       byte ldValue = Z80_FetchByte();
       programCounter++;
 
-      byte res = EMU_ReadMem(registerIY.reg + (word)ldValue);
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      res <<= 1;
+      OpcodeClicks = Z80_BitsRlc(&memValue, 23, 0, NULL);
 
-      if(BIT_ByteCheck(res, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&res, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&res, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(res))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(res == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(res, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
-
-      EMU_WriteMem((registerIY.reg + (word)ldValue), res);
-
-      OpcodeClicks = 23;
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
       break;
     }
     case 0x07:
@@ -12821,52 +12575,9 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerAF.hi <<= 1;
-
-      if(BIT_ByteCheck(registerAF.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerAF.hi, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerAF.hi, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerAF.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerAF.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerAF.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerAF.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x08:
@@ -12876,52 +12587,9 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerBC.hi >>= 1;
-
-      if(BIT_ByteCheck(registerBC.hi, 0))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerBC.hi, 7);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerBC.hi, 7);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRrc(&registerBC.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x09:
@@ -12931,52 +12599,2346 @@ int Z80_ExecuteIYBITSOpcode()
 
       registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
 
-      registerBC.lo >>= 1;
-
-      if(BIT_ByteCheck(registerBC.lo, 0))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerBC.lo, 7);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerBC.lo, 7);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.lo))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.lo == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRrc(&registerBC.lo, 23, 0, NULL);
 
       EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x0A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
 
-      OpcodeClicks = 23;
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x0B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x0C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x0D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x0E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x0F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x10:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x11:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x12:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x13:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x14:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x15:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x16:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x17:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x18:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x19:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x1A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x1B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x1C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x1D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x1E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x1F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x20:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x21:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x22:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x23:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x24:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x25:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x26:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x27:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x28:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x29:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x2A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x2B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x2C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x2D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x2E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x2F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x30:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x31:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x32:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x33:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x34:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x35:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x36:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x37:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x38:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x39:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x3A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x3B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x3C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x3D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x3E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x3F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x40:
+    case 0x41:
+    case 0x42:
+    case 0x43:
+    case 0x44:
+    case 0x45:
+    case 0x46:
+    case 0x47:
+    {
+
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 0, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x48:
+    case 0x49:
+    case 0x4A:
+    case 0x4B:
+    case 0x4C:
+    case 0x4D:
+    case 0x4E:
+    case 0x4F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 1, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x50:
+    case 0x51:
+    case 0x52:
+    case 0x53:
+    case 0x54:
+    case 0x55:
+    case 0x56:
+    case 0x57:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 2, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x58:
+    case 0x59:
+    case 0x5A:
+    case 0x5B:
+    case 0x5C:
+    case 0x5D:
+    case 0x5E:
+    case 0x5F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 3, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x60:
+    case 0x61:
+    case 0x62:
+    case 0x63:
+    case 0x64:
+    case 0x65:
+    case 0x66:
+    case 0x67:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 4, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x68:
+    case 0x69:
+    case 0x6A:
+    case 0x6B:
+    case 0x6C:
+    case 0x6D:
+    case 0x6E:
+    case 0x6F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 5, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x70:
+    case 0x71:
+    case 0x72:
+    case 0x73:
+    case 0x74:
+    case 0x75:
+    case 0x76:
+    case 0x77:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 6, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x78:
+    case 0x79:
+    case 0x7A:
+    case 0x7B:
+    case 0x7C:
+    case 0x7D:
+    case 0x7E:
+    case 0x7F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 7, 20);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x80:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x81:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x82:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x83:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x84:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x85:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x86:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x87:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x88:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x89:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x8A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x8B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x8C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x8D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x8E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x8F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x90:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x91:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x92:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x93:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x94:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x95:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x96:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x97:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x98:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x99:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x9A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x9B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x9C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x9D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x9E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x9F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xA0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xA1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xA2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xA3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xA4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xA5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xA6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xA7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xA8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xA9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xAA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xAB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xAC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xAD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xAE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xAF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xB0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xB1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xB2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xB3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xB4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xB5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xB6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xB7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xB8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xB9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xBA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xBB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xBC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xBD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xBE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xBF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xC0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xC1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xC2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xC3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xC4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xC5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xC6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xC7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 0, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xC8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xC9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xCA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xCB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xCC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xCD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xCE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xCF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 1, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xD0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xD1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xD2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xD3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xD4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xD5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xD6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xD7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 2, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xD8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xD9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xDA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xDB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xDC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xDD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xDE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xDF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 3, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xE0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xE1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xE2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xE3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xE4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xE5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xE6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xE7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 4, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xE8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xE9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xEA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xEB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xEC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xED:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xEE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xEF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 5, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xF0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xF1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xF2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xF3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xF4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xF5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xF6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xF7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 6, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xF8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xF9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xFA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xFB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xFC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xFD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xFE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xFF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 7, 23);
+
+      EMU_WriteMem((registerIY.reg + (word)ldValue), registerAF.hi);
       break;
     }
     default:
@@ -15067,52 +17029,9 @@ int Z80_ExecuteIXBITSOpcode()
 
       registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
 
-      registerBC.hi <<= 1;
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerBC.hi, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerBC.hi, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerBC.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
-
-      OpcodeClicks = 23;
       break;
     }
     case 0x01:
@@ -15122,52 +17041,273 @@ int Z80_ExecuteIXBITSOpcode()
 
       registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
 
-      registerBC.lo <<= 1;
-
-      if(BIT_ByteCheck(registerBC.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-        BIT_ByteSet(&registerBC.lo, 0);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-        BIT_ByteClear(&registerBC.lo, 0);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.lo))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.lo == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.lo, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRlc(&registerBC.lo, 23, 0, NULL);
 
       EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x02:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
 
-      OpcodeClicks = 23;
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x03:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x04:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x05:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x06:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x07:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRlc(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x08:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x09:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x0A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x0B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x0C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x0D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x0E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x0F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRrc(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x10:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x11:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x12:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x13:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x14:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x15:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x16:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x17:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRl(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
       break;
     }
     case 0x18:
@@ -15177,61 +17317,189 @@ int Z80_ExecuteIXBITSOpcode()
 
       registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
 
-      byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
-
-      registerBC.hi >>= 1;
-
-      if(BIT_ByteCheck(registerBC.hi, 0))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-      }
-
-      if(carry)
-      {
-        BIT_ByteSet(&registerBC.hi, 7);
-      }
-      else
-      {
-        BIT_ByteClear(&registerBC.hi, 7);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsRr(&registerBC.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x19:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
 
-      OpcodeClicks = 23;
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x1A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x1B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x1C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x1D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x1E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x1F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsRr(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x20:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x21:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x22:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x23:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x24:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x25:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x26:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x27:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSla(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
       break;
     }
     case 0x28:
@@ -15241,61 +17509,1974 @@ int Z80_ExecuteIXBITSOpcode()
 
       registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
 
-      byte bit7 = BIT_ByteCheck(registerBC.hi, 7);
-
-      registerBC.hi >>= 1;
-
-      if(BIT_ByteCheck(registerBC.hi, 0))
-      {
-        BIT_ByteSet(&registerAF.lo, C_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, C_Flag);
-      }
-
-      if(bit7)
-      {
-        BIT_ByteSet(&registerBC.hi, 7);
-      }
-      else
-      {
-        BIT_ByteClear(&registerBC.hi, 7);
-      }
-
-      BIT_ByteClear(&registerAF.lo, N_Flag);
-      BIT_ByteClear(&registerAF.lo, H_Flag);
-
-      if(Z80_IsEvenParity(registerBC.hi))
-      {
-        BIT_ByteSet(&registerAF.lo, PV_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, PV_Flag);
-      }
-
-      if(registerBC.hi == 0)
-      {
-        BIT_ByteSet(&registerAF.lo, Z_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, Z_Flag);
-      }
-
-      if(BIT_ByteCheck(registerBC.hi, 7))
-      {
-        BIT_ByteSet(&registerAF.lo, S_Flag);
-      }
-      else
-      {
-        BIT_ByteClear(&registerAF.lo, S_Flag);
-      }
+      OpcodeClicks = Z80_BitsSra(&registerBC.hi, 23, 0, NULL);
 
       EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x29:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
 
-      OpcodeClicks = 23;
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x2A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x2B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x2C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x2D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x2E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x2F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSra(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x30:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x31:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x32:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x33:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x34:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x35:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x36:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x37:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSll(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x38:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerBC.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x39:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerBC.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x3A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerDE.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x3B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerDE.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x3C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerHL.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x3D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerHL.lo, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x3E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&memValue, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x3F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSrl(&registerAF.hi, 23, 0, NULL);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x40:
+    case 0x41:
+    case 0x42:
+    case 0x43:
+    case 0x44:
+    case 0x45:
+    case 0x46:
+    case 0x47:
+    {
+
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 0, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x48:
+    case 0x49:
+    case 0x4A:
+    case 0x4B:
+    case 0x4C:
+    case 0x4D:
+    case 0x4E:
+    case 0x4F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 1, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x50:
+    case 0x51:
+    case 0x52:
+    case 0x53:
+    case 0x54:
+    case 0x55:
+    case 0x56:
+    case 0x57:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 2, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x58:
+    case 0x59:
+    case 0x5A:
+    case 0x5B:
+    case 0x5C:
+    case 0x5D:
+    case 0x5E:
+    case 0x5F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 3, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x60:
+    case 0x61:
+    case 0x62:
+    case 0x63:
+    case 0x64:
+    case 0x65:
+    case 0x66:
+    case 0x67:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 4, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x68:
+    case 0x69:
+    case 0x6A:
+    case 0x6B:
+    case 0x6C:
+    case 0x6D:
+    case 0x6E:
+    case 0x6F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 5, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x70:
+    case 0x71:
+    case 0x72:
+    case 0x73:
+    case 0x74:
+    case 0x75:
+    case 0x76:
+    case 0x77:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 6, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x78:
+    case 0x79:
+    case 0x7A:
+    case 0x7B:
+    case 0x7C:
+    case 0x7D:
+    case 0x7E:
+    case 0x7F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsBit(&memValue, 7, 20);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x80:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x81:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x82:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x83:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x84:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x85:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x86:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x87:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x88:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x89:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x8A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x8B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x8C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x8D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x8E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x8F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x90:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x91:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x92:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x93:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x94:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x95:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x96:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x97:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0x98:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0x99:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0x9A:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0x9B:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0x9C:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0x9D:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0x9E:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0x9F:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xA0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xA1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xA2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xA3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xA4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xA5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xA6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xA7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xA8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xA9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xAA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xAB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xAC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xAD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xAE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xAF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xB0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xB1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xB2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xB3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xB4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xB5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xB6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xB7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xB8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xB9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerBC.lo, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xBA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xBB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerDE.lo, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xBC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xBD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerHL.lo, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xBE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&memValue, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xBF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsReset(&registerAF.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xC0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xC1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xC2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xC3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xC4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xC5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xC6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xC7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 0, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xC8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xC9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xCA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xCB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xCC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xCD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xCE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xCF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 1, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xD0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xD1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xD2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xD3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xD4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xD5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xD6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xD7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 2, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xD8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xD9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xDA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xDB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xDC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xDD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xDE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xDF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 3, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xE0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xE1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xE2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xE3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xE4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xE5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xE6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xE7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 4, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xE8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xE9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xEA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xEB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xEC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xED:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xEE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xEF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 5, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xF0:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xF1:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xF2:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xF3:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xF4:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xF5:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xF6:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xF7:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 6, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
+      break;
+    }
+    case 0xF8:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.hi);
+      break;
+    }
+    case 0xF9:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerBC.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerBC.lo, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerBC.lo);
+      break;
+    }
+    case 0xFA:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.hi);
+      break;
+    }
+    case 0xFB:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerDE.lo, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerDE.lo);
+      break;
+    }
+    case 0xFC:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.hi);
+      break;
+    }
+    case 0xFD:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerHL.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerHL.lo, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerHL.lo);
+      break;
+    }
+    case 0xFE:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      byte memValue = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&memValue, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), memValue);
+      break;
+    }
+    case 0xFF:
+    {
+      byte ldValue = Z80_FetchByte();
+      programCounter++;
+
+      registerAF.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
+
+      OpcodeClicks = Z80_BitsSet(&registerAF.hi, 7, 23);
+
+      EMU_WriteMem((registerIX.reg + (word)ldValue), registerAF.hi);
       break;
     }
     default:
