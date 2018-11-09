@@ -108,9 +108,11 @@ int Z80_BitsRlc(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   {
     byte memValue = EMU_ReadMem(*memReg);
 
+    byte copy = BIT_ByteCheck(memValue, 7);
+
     memValue <<= 1;
 
-    if(BIT_ByteCheck(memValue, 7))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
       BIT_ByteSet(&memValue, 0);
@@ -155,9 +157,12 @@ int Z80_BitsRlc(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   }
   else
   {
+
+    byte copy = BIT_ByteCheck(*reg, 7);
+
     *reg <<= 1;
 
-    if(BIT_ByteCheck(*reg, 7))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
       BIT_ByteSet(&*reg, 0);
@@ -209,9 +214,11 @@ int Z80_BitsRrc(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   {
     byte memValue = EMU_ReadMem(*memReg);
 
+    byte copy = BIT_ByteCheck(memValue, 0);
+
     memValue >>= 1;
 
-    if(BIT_ByteCheck(memValue, 0))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
       BIT_ByteSet(&memValue, 7);
@@ -256,9 +263,12 @@ int Z80_BitsRrc(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   }
   else
   {
+
+    byte copy = BIT_ByteCheck(*reg, 0);
+
     *reg >>= 1;
 
-    if(BIT_ByteCheck(*reg, 0))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
       BIT_ByteSet(&*reg, 7);
@@ -311,11 +321,12 @@ int Z80_BitsRl(byte *reg, int OpcodeClicks, int isMem, word *memReg)
 
     byte memValue = EMU_ReadMem(*memReg);
 
-    memValue <<= 1;
-
+    byte copy = BIT_ByteCheck(memValue, 7);
     byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
 
-    if(BIT_ByteCheck(memValue, 7))
+    memValue <<= 1;
+
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -368,11 +379,13 @@ int Z80_BitsRl(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   }
   else
   {
-    *reg <<= 1;
 
+    byte copy = BIT_ByteCheck(*reg, 7);
     byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
 
-    if(BIT_ByteCheck(*reg, 7))
+    *reg <<= 1;
+
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -433,11 +446,13 @@ int Z80_BitsRr(byte *reg, int OpcodeClicks, int isMem, word *memReg)
 
     byte memValue = EMU_ReadMem(*memReg);
 
-    memValue >>= 1;
-
     byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
 
-    if(BIT_ByteCheck(memValue, 0))
+    byte copy = BIT_ByteCheck(memValue, 0);
+
+    memValue >>= 1;
+
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -491,11 +506,12 @@ int Z80_BitsRr(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   else
   {
 
-    *reg >>= 1;
-
+    byte copy = BIT_ByteCheck(*reg, 0);
     byte carry = BIT_ByteCheck(registerAF.lo, C_Flag);
 
-    if(BIT_ByteCheck(*reg, 0))
+    *reg >>= 1;
+
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -556,9 +572,11 @@ int Z80_BitsSla(byte *reg, int OpcodeClicks, int isMem, word *memReg)
 
     byte memValue = EMU_ReadMem(*memReg);
 
+    byte copy = BIT_ByteCheck(memValue, 7);
+
     memValue <<= 1;
 
-    if(BIT_ByteCheck(memValue, 7))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -605,9 +623,11 @@ int Z80_BitsSla(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   else
   {
 
+    byte copy = BIT_ByteCheck(*reg, 7);
+
     *reg <<= 1;
 
-    if(BIT_ByteCheck(*reg, 7))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -663,9 +683,11 @@ int Z80_BitsSra(byte *reg, int OpcodeClicks, int isMem, word *memReg)
 
     byte sevenbit = BIT_ByteCheck(memValue, 7);
 
+    byte copy = BIT_ByteCheck(memValue, 0);
+
     memValue >>= 1;
 
-    if(BIT_ByteCheck(memValue, 0))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -721,11 +743,13 @@ int Z80_BitsSra(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   else
   {
 
+    byte copy = BIT_ByteCheck(*reg, 0);
+
     byte sevenbit = BIT_ByteCheck(*reg, 7);
 
     *reg >>= 1;
 
-    if(BIT_ByteCheck(*reg, 0))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -788,9 +812,11 @@ int Z80_BitsSll(byte *reg, int OpcodeClicks, int isMem, word *memReg)
 
     byte memValue = EMU_ReadMem(*memReg);
 
+    byte copy = BIT_ByteCheck(memValue, 7);
+
     memValue <<= 1;
 
-    if(BIT_ByteCheck(memValue, 7))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -837,9 +863,11 @@ int Z80_BitsSll(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   else
   {
 
+    byte copy = BIT_ByteCheck(*reg, 7);
+
     *reg <<= 1;
 
-    if(BIT_ByteCheck(*reg, 7))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -893,9 +921,11 @@ int Z80_BitsSrl(byte *reg, int OpcodeClicks, int isMem, word *memReg)
 
     byte memValue = EMU_ReadMem(*memReg);
 
+    byte copy = BIT_ByteCheck(memValue, 0);
+
     memValue >>= 1;
 
-    if(BIT_ByteCheck(memValue, 0))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -942,9 +972,11 @@ int Z80_BitsSrl(byte *reg, int OpcodeClicks, int isMem, word *memReg)
   else
   {
 
+    byte copy = BIT_ByteCheck(*reg, 0);
+
     *reg >>= 1;
 
-    if(BIT_ByteCheck(*reg, 0))
+    if(copy)
     {
       BIT_ByteSet(&registerAF.lo, C_Flag);
     }
@@ -2711,6 +2743,12 @@ int Z80_ExecuteOpcode(byte opcode)
     {
       EMU_WriteMem(registerHL.reg, registerHL.lo);
       OpcodeClicks = 7;
+      break;
+    }
+    case 0x76:
+    {
+      Halted = 1;
+      OpcodeClicks = 1;
       break;
     }
     case 0x77:
@@ -8464,6 +8502,44 @@ int Z80_ExecuteEXTDOpcode()
       OpcodeClicks = 8;
       break;
     }
+    case 0x78:
+    {
+      registerAF.hi = EMU_ReadIO(registerBC.lo);
+
+      BIT_ByteClear(&registerAF.lo, N_Flag);
+
+      if(Z80_IsEvenParity(registerAF.hi))
+      {
+        BIT_ByteSet(&registerAF.lo, PV_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, PV_Flag);
+      }
+
+      BIT_ByteClear(&registerAF.lo, H_Flag);
+
+      if(registerAF.hi == 0)
+      {
+        BIT_ByteSet(&registerAF.lo, Z_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, Z_Flag);
+      }
+
+      if(BIT_ByteCheck(registerAF.hi, 7))
+      {
+        BIT_ByteSet(&registerAF.lo, S_Flag);
+      }
+      else
+      {
+        BIT_ByteClear(&registerAF.lo, S_Flag);
+      }
+
+      OpcodeClicks = 12;
+      break;
+    }
     case 0x79:
     {
       EMU_WriteIO(registerBC.lo, registerAF.hi);
@@ -9555,6 +9631,30 @@ int Z80_ExecuteIYOpcode()
       OpcodeClicks = 15;
       break;
     }
+    case 0x40:
+    {
+      registerBC.hi = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x41:
+    {
+      registerBC.hi = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x42:
+    {
+      registerBC.hi = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x43:
+    {
+      registerBC.hi = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x44:
     {
       registerBC.hi = registerIY.hi;
@@ -9573,6 +9673,36 @@ int Z80_ExecuteIYOpcode()
       programCounter++;
       registerBC.hi = EMU_ReadMem(registerIY.reg + (word)ldValue);
       OpcodeClicks = 19;
+      break;
+    }
+    case 0x47:
+    {
+      registerBC.hi = registerAF.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x48:
+    {
+      registerBC.lo = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x49:
+    {
+      registerBC.lo = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x4A:
+    {
+      registerBC.lo = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x4B:
+    {
+      registerBC.lo = registerDE.lo;
+      OpcodeClicks = 8;
       break;
     }
     case 0x4C:
@@ -9595,6 +9725,36 @@ int Z80_ExecuteIYOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x4F:
+    {
+      registerBC.lo = registerAF.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x50:
+    {
+      registerDE.hi = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x51:
+    {
+      registerDE.hi = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x52:
+    {
+      registerDE.hi = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x53:
+    {
+      registerDE.hi = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x54:
     {
       registerDE.hi = registerIY.hi;
@@ -9615,6 +9775,36 @@ int Z80_ExecuteIYOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x57:
+    {
+      registerDE.hi = registerAF.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x58:
+    {
+      registerDE.lo = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x59:
+    {
+      registerDE.lo = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x5A:
+    {
+      registerDE.lo = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x5B:
+    {
+      registerDE.lo = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x5C:
     {
       registerDE.lo = registerIY.hi;
@@ -9633,6 +9823,12 @@ int Z80_ExecuteIYOpcode()
       programCounter++;
       registerDE.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
       OpcodeClicks = 19;
+      break;
+    }
+    case 0x5F:
+    {
+      registerDE.lo = registerAF.hi;
+      OpcodeClicks = 8;
       break;
     }
     case 0x60:
@@ -9791,6 +9987,30 @@ int Z80_ExecuteIYOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x78:
+    {
+      registerAF.hi = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x79:
+    {
+      registerAF.hi = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x7A:
+    {
+      registerAF.hi = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x7B:
+    {
+      registerAF.hi = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x7C:
     {
       registerAF.hi = registerIY.hi;
@@ -9809,6 +10029,12 @@ int Z80_ExecuteIYOpcode()
       programCounter++;
       registerAF.lo = EMU_ReadMem(registerIY.reg + (word)ldValue);
       OpcodeClicks = 19;
+      break;
+    }
+    case 0x7F:
+    {
+      registerAF.hi = registerAF.hi;
+      OpcodeClicks = 8;
       break;
     }
     case 0x84:
@@ -15428,6 +15654,30 @@ int Z80_ExecuteIXOpcode()
       OpcodeClicks = 15;
       break;
     }
+    case 0x40:
+    {
+      registerBC.hi = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x41:
+    {
+      registerBC.hi = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x42:
+    {
+      registerBC.hi = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x43:
+    {
+      registerBC.hi = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x44:
     {
       registerBC.hi = registerIX.hi;
@@ -15446,6 +15696,36 @@ int Z80_ExecuteIXOpcode()
       programCounter++;
       registerBC.hi = EMU_ReadMem(registerIX.reg + (word)ldValue);
       OpcodeClicks = 19;
+      break;
+    }
+    case 0x47:
+    {
+      registerBC.hi = registerAF.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x48:
+    {
+      registerBC.lo = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x49:
+    {
+      registerBC.lo = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x4A:
+    {
+      registerBC.lo = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x4B:
+    {
+      registerBC.lo = registerDE.lo;
+      OpcodeClicks = 8;
       break;
     }
     case 0x4C:
@@ -15468,6 +15748,36 @@ int Z80_ExecuteIXOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x4F:
+    {
+      registerBC.lo = registerAF.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x50:
+    {
+      registerDE.hi = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x51:
+    {
+      registerDE.hi = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x52:
+    {
+      registerDE.hi = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x53:
+    {
+      registerDE.hi = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x54:
     {
       registerDE.hi = registerIX.hi;
@@ -15488,6 +15798,36 @@ int Z80_ExecuteIXOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x57:
+    {
+      registerDE.hi = registerAF.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x58:
+    {
+      registerDE.lo = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x59:
+    {
+      registerDE.lo = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x5A:
+    {
+      registerDE.lo = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x5B:
+    {
+      registerDE.lo = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x5C:
     {
       registerDE.lo = registerIX.hi;
@@ -15506,6 +15846,12 @@ int Z80_ExecuteIXOpcode()
       programCounter++;
       registerDE.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
       OpcodeClicks = 19;
+      break;
+    }
+    case 0x5F:
+    {
+      registerDE.lo = registerAF.hi;
+      OpcodeClicks = 8;
       break;
     }
     case 0x60:
@@ -15664,6 +16010,30 @@ int Z80_ExecuteIXOpcode()
       OpcodeClicks = 19;
       break;
     }
+    case 0x78:
+    {
+      registerAF.hi = registerBC.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x79:
+    {
+      registerAF.hi = registerBC.lo;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x7A:
+    {
+      registerAF.hi = registerDE.hi;
+      OpcodeClicks = 8;
+      break;
+    }
+    case 0x7B:
+    {
+      registerAF.hi = registerDE.lo;
+      OpcodeClicks = 8;
+      break;
+    }
     case 0x7C:
     {
       registerAF.hi = registerIX.hi;
@@ -15682,6 +16052,12 @@ int Z80_ExecuteIXOpcode()
       programCounter++;
       registerAF.lo = EMU_ReadMem(registerIX.reg + (word)ldValue);
       OpcodeClicks = 19;
+      break;
+    }
+    case 0x7F:
+    {
+      registerAF.hi = registerAF.hi;
+      OpcodeClicks = 8;
       break;
     }
     case 0x84:

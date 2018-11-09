@@ -327,6 +327,16 @@ void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue)
 	}
 }
 
+byte TMS_GetRefresh()
+{
+	if(refresh)
+	{
+		refresh = 0;
+		return 1;
+	}
+	return 0;
+}
+
 void TMS_Init()
 {
 	
@@ -354,6 +364,7 @@ void TMS_Init()
 	VCounterFirst = 1;
 	lineInterrupt = 0xFF;
 	ScreenDisabled = 1;
+	refresh = 0;
 
 	memset(&screenSmall, 1, sizeof(screenSmall));
 	memset(&screenMedium, 1, sizeof(screenMedium));
@@ -363,9 +374,18 @@ void TMS_Init()
 void TMS_Update(float nextCycle)
 {
 
-	tmsIrq = 0;
+	if(BIT_ByteCheck(tmsStatus, 7) && BIT_ByteCheck(tmsRegister[0x1], 5))
+	{
+		tmsIrq = 1;
+	}
+	else
+	{
+		tmsIrq = 0;
+	}
+
 	word hcount = HCounter;
 	byte nextline = 0;
+	refresh = 0;
 
 	tmsRunningCycles += nextCycle;
 
@@ -396,6 +416,8 @@ void TMS_Update(float nextCycle)
 			VCounter = 0;
 			VCounterFirst = 1;
 			TMS_Render();
+
+			refresh = 1;
 		}
 		else if((VCounter == TMS_GetVJump()) && VCounterFirst)
 		{
@@ -917,10 +939,10 @@ void TMS_Background4()
 			word tileData = videoMemory[ntBaseOffset+1] << 8;
 			tileData |= videoMemory[ntBaseOffset];
 
-			byte hiPriority = BIT_ByteCheck(tileData, 12);
-			byte useSpritePalette = BIT_ByteCheck(tileData, 11);
-			byte vertFlip = BIT_ByteCheck(tileData, 10);
-			byte horzFlip = BIT_ByteCheck(tileData, 9);
+			byte hiPriority = BIT_WordCheck(tileData, 12);
+			byte useSpritePalette = BIT_WordCheck(tileData, 11);
+			byte vertFlip = BIT_WordCheck(tileData, 10);
+			byte horzFlip = BIT_WordCheck(tileData, 9);
 			word tileDefinition = tileData & 0x1FF;
 
 			int offset = VCounter;

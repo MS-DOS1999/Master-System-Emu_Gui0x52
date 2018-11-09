@@ -153,6 +153,8 @@ byte tmsIsPal;
 
 byte ScreenDisabled;
 
+byte refresh;
+
 void TMS_ResetScreen();
 void TMS_WriteAddress(byte data);
 void TMS_IncrementAddress();
@@ -170,6 +172,7 @@ byte TMS_GetPixelColor(byte x, byte y, int color);
 byte TMS_GetVJump();
 byte TMS_GetVJumpTo();
 void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue);
+byte TMS_GetRefresh();
 void TMS_Init();
 void TMS_Update(float nextCycle);
 byte TMS_GetMode();

@@ -2,7 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-  sfEvent event;
   DEBUG = 0;
   char deb[6];
   strcpy(deb, "debug");
@@ -42,7 +41,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("zexall.sms");
+  EMU_LoadRom("Sonic Chaos.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -58,6 +57,8 @@ int main(int argc, char *argv[])
       {
           sfRenderWindow_close(window);
       }
+
+      EMU_HandleInput();
     }
 
     double currentTime = sfTime_asMilliseconds(sfClock_getElapsedTime(clock));
@@ -119,6 +120,9 @@ void EMU_Init()
   slot1Page = 1;
   slot2Page = 2;
 
+  joypadPortOne = 0xFF;
+  joypadPortTwo = 0xFF;
+
   tmsIsPal = 0;
 
   FPS = tmsIsPal ? 50 : 60;
@@ -139,10 +143,17 @@ void EMU_Update()
 
   TMS_ResetScreen();
   //on emule donc le nombre de clicks dans SmsClicksPerFrame par frame
-  while(clicksInUpdate < SmsClicksPerFrame)
+  while(!TMS_GetRefresh())
   {
-
-    int z80Clicks = Z80_ExecuteInstruction();
+    int z80Clicks;
+    if(Halted)
+    {
+      z80Clicks = 4;
+    }
+    else
+    {
+      z80Clicks = Z80_ExecuteInstruction();
+    }
 
     Z80_UpdateInterrupts();
 
@@ -472,10 +483,10 @@ byte EMU_ReadIO(byte address)
 
   switch(address)
   {
-    case 0xDC: return 0xFF; break; //keyPort1
-    case 0xC0: return 0xFF; break; //keyPort1
-    case 0xDD: return 0xFF; break; //keyPort2
-    case 0xC1: return 0xFF; break; //keyPort2
+    case 0xDC: return joypadPortOne; break; //joypadPort1
+    case 0xC0: return joypadPortOne; break; //joypadPort1
+    case 0xDD: return joypadPortTwo; break; //joypadPort2
+    case 0xC1: return joypadPortTwo; break; //joypadPort2
     default : return 0xFF; break;
   }
 }
@@ -499,5 +510,173 @@ void EMU_WriteIO(byte address, byte data)
     case 0xBF: TMS_WriteAddress(data); break;
     case 0xBD: TMS_WriteAddress(data); break;
     default: break;
+  }
+}
+
+void EMU_JoypadKeyPressed(int port, int key)
+{
+  if(port == 1)
+  {
+    BIT_ByteClear(&joypadPortOne, key);
+  }
+  else
+  {
+    BIT_ByteClear(&joypadPortTwo, key);
+  }
+}
+
+void EMU_JoypadKeyReleased(int port, int key)
+{
+  if(port == 1)
+  {
+    BIT_ByteSet(&joypadPortOne, key);
+  }
+  else
+  {
+    BIT_ByteSet(&joypadPortTwo, key);
+  }
+}
+
+void EMU_ResetButton()
+{
+  if(!ExecuteReset)
+  {
+    ResetInt = 1;
+  }
+
+  EMU_JoypadKeyPressed(2, 4);
+}
+
+void EMU_HandleInput()
+{
+  
+  if(event.type == sfEvtKeyPressed)
+  {
+    int key = -1;
+    int port = 1;
+    
+    //player1
+    if(event.key.code == sfKeyO){
+      key = 4;
+    }
+    else if(event.key.code == sfKeyK){
+      key = 5;
+    }
+    else if(event.key.code == sfKeySpace){
+      EMU_ResetButton();
+    }
+    else if(event.key.code == sfKeyD){
+      key = 3;
+    }
+    else if(event.key.code == sfKeyQ){
+      key = 2;
+    }
+    else if(event.key.code == sfKeyZ){
+      key = 0;
+    }
+    else if(event.key.code == sfKeyS){
+      key = 1;
+    }
+    //player2
+    else if(event.key.code == sfKeyNumpad6)
+    {
+      port = 2;
+      key = 2;
+    }
+    else if(event.key.code == sfKeyNumpad2)
+    {
+      port = 2;
+      key = 2;
+    }
+    else if(event.key.code == sfKeyRight)
+    {
+      port = 2;
+      key = 1;
+    }
+    else if(event.key.code == sfKeyLeft)
+    {
+      port = 2;
+      key = 0;
+    }
+    else if(event.key.code == sfKeyUp)
+    {
+      port = 1;
+      key = 6;
+    }
+    else if(event.key.code == sfKeyDown)
+    {
+      port = 1;
+      key = 7;
+    }
+    
+    if (key != -1)
+    {
+      EMU_JoypadKeyPressed(port, key);
+    }
+  }
+  else if(event.type == sfEvtKeyReleased)
+  {
+    int key = -1;
+    int port = 1;
+    
+    //player1
+    if(event.key.code == sfKeyO){
+      key = 4;
+    }
+    else if(event.key.code == sfKeyK){
+      key = 5;
+    }
+    else if(event.key.code == sfKeySpace){
+      port = 2;
+      key = 4;
+    }
+    else if(event.key.code == sfKeyD){
+      key = 3;
+    }
+    else if(event.key.code == sfKeyQ){
+      key = 2;
+    }
+    else if(event.key.code == sfKeyZ){
+      key = 0;
+    }
+    else if(event.key.code == sfKeyS){
+      key = 1;
+    }
+    //player2
+    else if(event.key.code == sfKeyNumpad6)
+    {
+      port = 2;
+      key = 2;
+    }
+    else if(event.key.code == sfKeyNumpad2)
+    {
+      port = 2;
+      key = 2;
+    }
+    else if(event.key.code == sfKeyRight)
+    {
+      port = 2;
+      key = 1;
+    }
+    else if(event.key.code == sfKeyLeft)
+    {
+      port = 2;
+      key = 0;
+    }
+    else if(event.key.code == sfKeyUp)
+    {
+      port = 1; //(although marked as player 1 it is player 2 but using overlapped ports)
+      key = 6;
+    }
+    else if(event.key.code == sfKeyDown)
+    {
+      port = 1; //(although marked as player 1 it is player 2 but using overlapped ports)
+      key = 7;
+    }
+    
+    if (key != -1)
+    {
+      EMU_JoypadKeyReleased(port, key);
+    }
   }
 }

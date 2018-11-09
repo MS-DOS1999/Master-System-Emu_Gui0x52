@@ -42,9 +42,13 @@ byte slot0Page;
 byte slot1Page;
 byte slot2Page;
 
+byte joypadPortOne;
+byte joypadPortTwo;
+
 unsigned int FPS;
 
 sfRenderWindow* window;
+sfEvent event;
 
 void EMU_Init();
 void EMU_Update();
@@ -57,5 +61,9 @@ void EMU_SetPagingCodeMaster(word address, byte data);
 byte EMU_ReadMem(word address);
 byte EMU_ReadIO(byte address);
 void EMU_WriteIO(byte address, byte data);
+void EMU_JoypadKeyPressed(int port, int key);
+void EMU_JoypadKeyReleased(int port, int key);
+void EMU_ResetButton();
+void EMU_HandleInput();
 
 #endif
