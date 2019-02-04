@@ -234,6 +234,7 @@ byte TMS_GetPixelColor(byte x, byte y, int color)
 	{
 		return screenHigh[x][y][color];
 	}
+	return 0;
 }
 
 byte TMS_GetVJump()
@@ -268,6 +269,7 @@ byte TMS_GetVJump()
 			return 0xFF;
 		}
 	}
+	return 0;
 }
 
 byte TMS_GetVJumpTo()
@@ -302,6 +304,7 @@ byte TMS_GetVJumpTo()
 			return 0xFF;
 		}
 	}
+	return 0;
 }
 
 void TMS_GetOldColor(byte color, byte* red, byte* green, byte* blue)
@@ -525,7 +528,6 @@ void TMS_Sprite2()
 	sgtable <<= 11;
 
 	byte size = BIT_ByteCheck(tmsRegister[0x1], 1) ? 16 : 8;
-	byte isZoomed = BIT_ByteCheck(tmsRegister[0x1], 0);
 
 	int spriteCount = 0;
 
@@ -645,7 +647,6 @@ void TMS_Sprite4()
 	word satbase = TMS_GetSATBase();
 
 	byte is8x16 = 0;
-	byte isZoomed = 0;
 	byte size = 8;
 
 	byte shiftX = BIT_ByteCheck(tmsRegister[0x0], 3);
@@ -659,7 +660,6 @@ void TMS_Sprite4()
 
 	if(BIT_ByteCheck(tmsRegister[0x1], 0))
 	{
-		isZoomed = 1;
 		size = 16;
 	}
 

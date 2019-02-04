@@ -82,6 +82,10 @@ byte IFF2;
 byte Halted;
 byte EIPending;
 
+word DAATable[0x800];
+byte ZSPTable[256];
+
+void InitDAATable();
 void Z80_UpdateInterrupts();
 int Z80_ExecuteInstruction();
 void Z80_IncRegR();

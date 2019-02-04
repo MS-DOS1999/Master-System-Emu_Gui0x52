@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("Sonic Chaos.sms");
+  EMU_LoadRom("zexdoc.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -82,6 +82,8 @@ void EMU_Init()
   memset(&smsMemory, 0, sizeof(smsMemory));
   memset(&gameMemory, 0, sizeof(gameMemory));
   memset(&ramBank, 0, sizeof(ramBank));
+  memset(&DAATable, 0, sizeof(DAATable));
+  memset(&ZSPTable, 0, sizeof(ZSPTable));
 
   registerAF.reg = 0x0000;
   registerBC.reg = 0x0000;
@@ -125,8 +127,9 @@ void EMU_Init()
 
   tmsIsPal = 0;
 
-  FPS = tmsIsPal ? 50 : 60;
-
+  //FPS = tmsIsPal ? 50 : 60;
+  FPS = 1000;
+  InitDAATable();
   TMS_Init();
 
 }
@@ -137,9 +140,6 @@ void EMU_Update()
   //Z80 clock 3.58 Mhz, 3 fois plus lent que la SMS
   //VDP clock 5.36 Mhz, 2 fois plus lent que la SMS
   //Sound clock 3.58 Mhz, pareil que le Z80
-
-  const double SmsClicksPerFrame = 10738580 / 60;
-  unsigned int clicksInUpdate = 0;
 
   TMS_ResetScreen();
   //on emule donc le nombre de clicks dans SmsClicksPerFrame par frame
@@ -165,8 +165,6 @@ void EMU_Update()
 
     TMS_Update(vdpClicks);
     //SN_Update();
-
-    clicksInUpdate += smsClicks;
 
   }
 
@@ -311,7 +309,7 @@ void EMU_WriteMem(word address, byte data)
   }
   else if(address < 0xC000)
   {
-    byte memCtrlData = smsMemory[0xFFFC];
+    
     if(ramBankNumber > -1)
     {
       ramBank[ramBankNumber][address-0x8000] = data;
@@ -464,7 +462,7 @@ byte EMU_ReadIO(byte address)
     {
       //hcounter
       word mod = HCounter & 511;
-      mod >> 1;
+      mod >>= 1;
       byte res = mod & 0xFFFF;
       return res;
     }
