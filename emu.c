@@ -1,5 +1,30 @@
 #include "emu.h"
 
+int DEBUG;
+int UNOP;
+
+byte smsMemory[0x10000];
+byte gameMemory[0x100000]; //un jeu SMS fait max 1 mega byte
+byte ramBank[0x2][0x4000];
+int isCodeMaster; //ce fabricant à une particularité à lui tout seul, on doit donc savoir si c'ets lui qui est chargé
+int oneMegaCartridge;
+int ramBankNumber;
+
+unsigned long int cyclesThisUpdate;
+
+byte slot0Page;
+byte slot1Page;
+byte slot2Page;
+
+byte joypadPortOne;
+byte joypadPortTwo;
+
+unsigned int FPS;
+
+sfRenderWindow* window;
+sfEvent event;
+SN soundChip;
+
 int main(int argc, char *argv[])
 {
   DEBUG = 0;
@@ -22,6 +47,8 @@ int main(int argc, char *argv[])
     }
   }
 
+  SDL_Init(SDL_INIT_AUDIO);
+
   sfVideoMode mode = {256, 240, 32};
 
   window = sfRenderWindow_create(mode, "Gui0x52 - Master System Emulator", sfClose, NULL);
@@ -41,7 +68,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("zexdoc.sms");
+  EMU_LoadRom("Phantasy Star.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -127,10 +154,11 @@ void EMU_Init()
 
   tmsIsPal = 0;
 
-  //FPS = tmsIsPal ? 50 : 60;
-  FPS = 1000;
+  FPS = tmsIsPal ? 50 : 60;
+  //FPS = 1000000;
   InitDAATable();
   TMS_Init();
+  soundChip.SN_Reset();
 
 }
 
@@ -142,6 +170,7 @@ void EMU_Update()
   //Sound clock 3.58 Mhz, pareil que le Z80
 
   TMS_ResetScreen();
+  cyclesThisUpdate = 0;
   //on emule donc le nombre de clicks dans SmsClicksPerFrame par frame
   while(!TMS_GetRefresh())
   {
@@ -157,14 +186,19 @@ void EMU_Update()
 
     Z80_UpdateInterrupts();
 
-    int smsClicks = z80Clicks * 3;
+    z80Clicks *= 2;
 
-    float vdpClicks = smsClicks / 2;
+    cyclesThisUpdate += z80Clicks;
 
-    int soundClicks = z80Clicks;
+    float vdpClicks = z80Clicks;
+    vdpClicks /= 2;
+
+    float soundClicks = z80Clicks;
+    soundClicks /= 3;
 
     TMS_Update(vdpClicks);
-    //SN_Update();
+
+    soundChip.SN_Update(soundClicks);
 
   }
 
@@ -498,7 +532,7 @@ void EMU_WriteIO(byte address, byte data)
 
   if((address >= 0x40) && (address < 0x80))
   {
-    //sound write
+    soundChip.SN_WriteData(cyclesThisUpdate, data);
     return;
   }
 
@@ -554,10 +588,10 @@ void EMU_HandleInput()
     int port = 1;
     
     //player1
-    if(event.key.code == sfKeyO){
+    if(event.key.code == sfKeyK){
       key = 4;
     }
-    else if(event.key.code == sfKeyK){
+    else if(event.key.code == sfKeyL){
       key = 5;
     }
     else if(event.key.code == sfKeySpace){
@@ -576,15 +610,15 @@ void EMU_HandleInput()
       key = 1;
     }
     //player2
-    else if(event.key.code == sfKeyNumpad6)
-    {
-      port = 2;
-      key = 2;
-    }
     else if(event.key.code == sfKeyNumpad2)
     {
       port = 2;
       key = 2;
+    }
+    else if(event.key.code == sfKeyNumpad3)
+    {
+      port = 2;
+      key = 3;
     }
     else if(event.key.code == sfKeyRight)
     {
@@ -618,10 +652,10 @@ void EMU_HandleInput()
     int port = 1;
     
     //player1
-    if(event.key.code == sfKeyO){
+    if(event.key.code == sfKeyK){
       key = 4;
     }
-    else if(event.key.code == sfKeyK){
+    else if(event.key.code == sfKeyL){
       key = 5;
     }
     else if(event.key.code == sfKeySpace){
@@ -641,15 +675,15 @@ void EMU_HandleInput()
       key = 1;
     }
     //player2
-    else if(event.key.code == sfKeyNumpad6)
-    {
-      port = 2;
-      key = 2;
-    }
     else if(event.key.code == sfKeyNumpad2)
     {
       port = 2;
       key = 2;
+    }
+    else if(event.key.code == sfKeyNumpad3)
+    {
+      port = 2;
+      key = 3;
     }
     else if(event.key.code == sfKeyRight)
     {

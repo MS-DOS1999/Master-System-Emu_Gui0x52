@@ -66,9 +66,9 @@ VCounter Values = 0x0-0xFF,0-0x0A,0xD2,0xFF
 #define NUM_RES_VERT_MED   224
 #define NUM_RES_VERT_HIGH  240
 
-byte screenSmall[NUM_RES_HORIZONTAL][NUM_RES_VERT_SMALL][3];
-byte screenMedium[NUM_RES_HORIZONTAL][NUM_RES_VERT_MED][3];
-byte screenHigh[NUM_RES_HORIZONTAL][NUM_RES_VERT_HIGH][3];
+extern byte screenSmall[NUM_RES_HORIZONTAL][NUM_RES_VERT_SMALL][3];
+extern byte screenMedium[NUM_RES_HORIZONTAL][NUM_RES_VERT_MED][3];
+extern byte screenHigh[NUM_RES_HORIZONTAL][NUM_RES_VERT_HIGH][3];
 
 /*
 Register 0x0:
@@ -124,36 +124,36 @@ Register 0xA:
 The entire 8 bit register is what the line counter should be set to (explained later)
 */
 
-byte videoMemory[0x4000];
-byte paletteMemory[32];
+extern byte videoMemory[0x4000];
+extern byte paletteMemory[32];
 
-byte tmsRegister[0xB];
+extern byte tmsRegister[0xB];
 
-word controlWord;
-byte isSecondWrite;
-byte readBuffer;
+extern word controlWord;
+extern byte isSecondWrite;
+extern byte readBuffer;
 
-byte tmsStatus;
+extern byte tmsStatus;
 
-word HCounter;
-byte VCounter;
-byte VCounterFirst;
+extern word HCounter;
+extern byte VCounter;
+extern byte VCounterFirst;
 
-byte lineInterrupt;
-byte VScroll;
+extern byte lineInterrupt;
+extern byte VScroll;
 
-byte tmsIrq;
+extern byte tmsIrq;
 
-float tmsRunningCycles;
+extern float tmsRunningCycles;
 
-word tmsHeight;
-word tmsWidth;
+extern word tmsHeight;
+extern word tmsWidth;
 
-byte tmsIsPal;
+extern byte tmsIsPal;
 
-byte ScreenDisabled;
+extern byte ScreenDisabled;
 
-byte refresh;
+extern byte refresh;
 
 void TMS_ResetScreen();
 void TMS_WriteAddress(byte data);

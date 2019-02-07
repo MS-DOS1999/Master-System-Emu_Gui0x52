@@ -1,5 +1,40 @@
 #include "tms.h"
 
+byte screenSmall[NUM_RES_HORIZONTAL][NUM_RES_VERT_SMALL][3];
+byte screenMedium[NUM_RES_HORIZONTAL][NUM_RES_VERT_MED][3];
+byte screenHigh[NUM_RES_HORIZONTAL][NUM_RES_VERT_HIGH][3];
+
+byte videoMemory[0x4000];
+byte paletteMemory[32];
+
+byte tmsRegister[0xB];
+
+word controlWord;
+byte isSecondWrite;
+byte readBuffer;
+
+byte tmsStatus;
+
+word HCounter;
+byte VCounter;
+byte VCounterFirst;
+
+byte lineInterrupt;
+byte VScroll;
+
+byte tmsIrq;
+
+float tmsRunningCycles;
+
+word tmsHeight;
+word tmsWidth;
+
+byte tmsIsPal;
+
+byte ScreenDisabled;
+
+byte refresh;
+
 void TMS_ResetScreen()
 {
 	if (tmsHeight == NUM_RES_VERT_SMALL)

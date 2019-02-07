@@ -13,9 +13,10 @@
 #include "bitUtils.h"
 #include "z80.h"
 #include "tms.h"
+#include "sn.h"
 
-int DEBUG;
-int UNOP;
+extern int DEBUG;
+extern int UNOP;
 
 /*Region	    Maps to
   $0000-$03ff	ROM (unpaged)
@@ -31,24 +32,27 @@ int UNOP;
   $fffe	      Mapper slot 1 control
   $ffff	      Mapper slot 2 control
 */
-byte smsMemory[0x10000];
-byte gameMemory[0x100000]; //un jeu SMS fait max 1 mega byte
-byte ramBank[0x2][0x4000];
-int isCodeMaster; //ce fabricant à une particularité à lui tout seul, on doit donc savoir si c'ets lui qui est chargé
-int oneMegaCartridge;
-int ramBankNumber;
+extern byte smsMemory[0x10000];
+extern byte gameMemory[0x100000]; //un jeu SMS fait max 1 mega byte
+extern byte ramBank[0x2][0x4000];
+extern int isCodeMaster; //ce fabricant à une particularité à lui tout seul, on doit donc savoir si c'ets lui qui est chargé
+extern int oneMegaCartridge;
+extern int ramBankNumber;
 
-byte slot0Page;
-byte slot1Page;
-byte slot2Page;
+extern unsigned long int cyclesThisUpdate;
 
-byte joypadPortOne;
-byte joypadPortTwo;
+extern byte slot0Page;
+extern byte slot1Page;
+extern byte slot2Page;
 
-unsigned int FPS;
+extern byte joypadPortOne;
+extern byte joypadPortTwo;
 
-sfRenderWindow* window;
-sfEvent event;
+extern unsigned int FPS;
+
+extern sfRenderWindow* window;
+extern sfEvent event;
+extern SN soundChip;
 
 void EMU_Init();
 void EMU_Update();
