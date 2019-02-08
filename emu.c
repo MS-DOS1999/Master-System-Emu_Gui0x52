@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
 
   EMU_Init();
-  EMU_LoadRom("Phantasy Star.sms");
+  EMU_LoadRom("zexdoc.sms");
 
   const double VdpUpdateInterval = 1000/FPS;
 
@@ -154,8 +154,8 @@ void EMU_Init()
 
   tmsIsPal = 0;
 
-  FPS = tmsIsPal ? 50 : 60;
-  //FPS = 1000000;
+  //FPS = tmsIsPal ? 50 : 60;
+  FPS = 1000000;
   InitDAATable();
   TMS_Init();
   soundChip.SN_Reset();
@@ -380,42 +380,50 @@ void EMU_WriteMem(word address, byte data)
 
 void EMU_SetPaging(word address, byte data)
 {
-  byte page = oneMegaCartridge ? data & 0x3F : data & 0x1F;
+  if(address >= 0xFFFC)
+  {
+    byte page = oneMegaCartridge ? data & 0x3F : data & 0x1F;
 
-  if(address == 0xFFFC)
-  {
-    //slot 2, Ram ou Rom ?
-    if(BIT_ByteCheck(data, 3)) //RAM
+    smsMemory[address - 0x2000] = data;
+
+    if(address == 0xFFFC)
     {
-      //on swap quel bank ?
-      ramBankNumber = BIT_ByteCheck(data, 2) ? 1 : 0;
+      //slot 2, Ram ou Rom ?
+      if(BIT_ByteCheck(data, 3)) //RAM
+      {
+        //on swap quel bank ?
+        ramBankNumber = BIT_ByteCheck(data, 2) ? 1 : 0;
+      }
+      else //ROM
+      {
+        ramBankNumber = -1;
+      }
     }
-    else //ROM
+    else if(address == 0xFFFD)
     {
-      ramBankNumber = -1;
+      slot0Page = page;
     }
-  }
-  else if(address == 0xFFFD)
-  {
-    slot0Page = page;
-  }
-  else if(address == 0xFFFE)
-  {
-    slot1Page = page;
-  }
-  else if(address == 0xFFFF)
-  {
-    //on peut rom banking que si la ram n'est pas mappé ici
-    if(!BIT_ByteCheck(smsMemory[0xFFFC], 3))
+    else if(address == 0xFFFE)
     {
-      slot2Page = page;
+      slot1Page = page;
+    }
+    else if(address == 0xFFFF)
+    {
+      //on peut rom banking que si la ram n'est pas mappé ici
+      if(!BIT_ByteCheck(smsMemory[0xFFFC], 3))
+      {
+        slot2Page = page;
+      }
     }
   }
 }
 
 void EMU_SetPagingCodeMaster(word address, byte data)
 {
-  byte page = oneMegaCartridge ? data & 0x3F : data & 0x1F;
+  BIT_ByteClear(&data, 7);
+  BIT_ByteClear(&data, 6);
+  BIT_ByteClear(&data, 5);
+  byte page = data;
 
   switch(address)
   {
@@ -492,14 +500,7 @@ byte EMU_ReadIO(byte address)
     {
       return VCounter;
     }
-    if(address == 0x7F)
-    {
-      //hcounter
-      word mod = HCounter & 511;
-      mod >>= 1;
-      byte res = mod & 0xFFFF;
-      return res;
-    }
+    
     return 0;
   }
 
@@ -515,10 +516,22 @@ byte EMU_ReadIO(byte address)
 
   switch(address)
   {
-    case 0xDC: return joypadPortOne; break; //joypadPort1
+    case 0xBD: return TMS_GetStatus(); break;
+    case 0xBE: return TMS_ReadDataPort(); break;
+    case 0xBF: return TMS_GetStatus(); break;
+    case 0x7E: return VCounter; break;
+    case 0x7F:
+    {
+      word mod = HCounter & 511;
+      mod >>= 1;
+      byte res = mod & 0xFFFF;
+      return res;
+      break;
+    }
     case 0xC0: return joypadPortOne; break; //joypadPort1
-    case 0xDD: return joypadPortTwo; break; //joypadPort2
     case 0xC1: return joypadPortTwo; break; //joypadPort2
+    case 0xDC: return joypadPortOne; break; //joypadPort1
+    case 0xDD: return joypadPortTwo; break; //joypadPort2
     default : return 0xFF; break;
   }
 }
@@ -538,9 +551,9 @@ void EMU_WriteIO(byte address, byte data)
 
   switch(address)
   {
+    case 0xBD: TMS_WriteAddress(data); break;
     case 0xBE: TMS_WriteDataPort(data); break;
     case 0xBF: TMS_WriteAddress(data); break;
-    case 0xBD: TMS_WriteAddress(data); break;
     default: break;
   }
 }

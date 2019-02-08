@@ -3770,7 +3770,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerBC.hi ^ registerAF.hi) & (registerBC.hi ^ (registerAF.hi - registerBC.hi)) & 0x80)
+      if((registerBC.hi ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerBC.hi)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -3828,7 +3828,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerBC.lo ^ registerAF.hi) & (registerBC.lo ^ (registerAF.hi - registerBC.lo)) & 0x80)
+      if((registerBC.lo ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerBC.lo)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -3886,7 +3886,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerDE.hi ^ registerAF.hi) & (registerDE.hi ^ (registerAF.hi - registerDE.hi)) & 0x80)
+      if((registerDE.hi ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerDE.hi)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -3944,7 +3944,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerDE.lo ^ registerAF.hi) & (registerDE.lo ^ (registerAF.hi - registerDE.lo)) & 0x80)
+      if((registerDE.lo ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerDE.lo)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4002,7 +4002,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerHL.hi ^ registerAF.hi) & (registerHL.hi ^ (registerAF.hi - registerHL.hi)) & 0x80)
+      if((registerHL.hi ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerHL.hi)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4060,7 +4060,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerHL.lo ^ registerAF.hi) & (registerHL.lo ^ (registerAF.hi - registerHL.lo)) & 0x80)
+      if((registerHL.lo ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerHL.lo)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4119,7 +4119,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((memValue ^ registerAF.hi) & (memValue ^ (registerAF.hi - memValue)) & 0x80)
+      if((memValue ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - memValue)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4237,7 +4237,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerBC.hi ^ registerAF.hi) & (registerBC.hi ^ ((registerAF.hi - registerBC.hi) - carry)) & 0x80)
+      if((registerBC.hi ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - registerBC.hi) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4297,7 +4297,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerBC.lo ^ registerAF.hi) & (registerBC.lo ^ ((registerAF.hi - registerBC.lo) - carry)) & 0x80)
+      if((registerBC.lo ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - registerBC.lo) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4357,7 +4357,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerDE.hi ^ registerAF.hi) & (registerDE.hi ^ ((registerAF.hi - registerDE.hi) - carry)) & 0x80)
+      if((registerDE.hi ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - registerDE.hi) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4417,7 +4417,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerDE.lo ^ registerAF.hi) & (registerDE.lo ^ ((registerAF.hi - registerDE.lo) - carry)) & 0x80)
+      if((registerDE.lo ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - registerDE.lo) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4477,7 +4477,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerHL.hi ^ registerAF.hi) & (registerHL.hi ^ ((registerAF.hi - registerHL.hi) - carry)) & 0x80)
+      if((registerHL.hi ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - registerHL.hi) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4537,7 +4537,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerHL.lo ^ registerAF.hi) & (registerHL.lo ^ ((registerAF.hi - registerHL.lo) - carry)) & 0x80)
+      if((registerHL.lo ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - registerHL.lo) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -4598,7 +4598,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((memValue ^ registerAF.hi) & (memValue ^ ((registerAF.hi - memValue) - carry)) & 0x80)
+      if((memValue ^ registerAF.hi) & (registerAF.hi ^ ((registerAF.hi - memValue) - carry)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -5677,7 +5677,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerBC.hi ^ registerAF.hi) & (registerBC.hi ^ (registerAF.hi - registerBC.hi)) & 0x80)
+      if((registerBC.hi ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerBC.hi)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -5733,7 +5733,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerBC.lo ^ registerAF.hi) & (registerBC.lo ^ (registerAF.hi - registerBC.lo)) & 0x80)
+      if((registerBC.lo ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerBC.lo)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -5775,7 +5775,7 @@ int Z80_ExecuteOpcode(byte opcode)
     case 0xBA:
     {
 
-      byte result = registerAF.hi - registerDE.lo;
+      byte result = registerAF.hi - registerDE.hi;
 
       if(registerAF.hi < registerDE.hi)
       {
@@ -5789,7 +5789,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerDE.hi ^ registerAF.hi) & (registerDE.hi ^ (registerAF.hi - registerDE.hi)) & 0x80)
+      if((registerDE.hi ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerDE.hi)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -5845,7 +5845,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerDE.lo ^ registerAF.hi) & (registerDE.lo ^ (registerAF.hi - registerDE.lo)) & 0x80)
+      if((registerDE.lo ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerDE.lo)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -5901,7 +5901,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerHL.hi ^ registerAF.hi) & (registerHL.hi ^ (registerAF.hi - registerHL.hi)) & 0x80)
+      if((registerHL.hi ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerHL.hi)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -5957,7 +5957,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((registerHL.lo ^ registerAF.hi) & (registerHL.lo ^ (registerAF.hi - registerHL.lo)) & 0x80)
+      if((registerHL.lo ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - registerHL.lo)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
@@ -6014,7 +6014,7 @@ int Z80_ExecuteOpcode(byte opcode)
       BIT_ByteSet(&registerAF.lo, N_Flag);
 
 
-      if((memValue ^ registerAF.hi) & (memValue ^ (registerAF.hi - memValue)) & 0x80)
+      if((memValue ^ registerAF.hi) & (registerAF.hi ^ (registerAF.hi - memValue)) & 0x80)
       {
         BIT_ByteSet(&registerAF.lo, PV_Flag);
       }
