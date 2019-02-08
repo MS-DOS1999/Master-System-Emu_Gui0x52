@@ -299,13 +299,23 @@ void EMU_LoadRom(const char* romName)
   //on copy les trois première page de jeu dans la memoire de la sms
   memcpy(&smsMemory[0x0], &gameMemory[0x0], 0xC000);
 
+  smsMemory[0xFFFE] = 0x01;
+  smsMemory[0xFFFF] = 0x02;
+
   isCodeMaster = EMU_IsCodeMaster();
+
+  if(isCodeMaster)
+  {
+    EMU_SetPagingCodeMaster(0x0, 0);
+    EMU_SetPagingCodeMaster(0x4000, 1);
+    EMU_SetPagingCodeMaster(0x8000, 0);
+  }
 }
 
 int EMU_IsCodeMaster()
 {
-  word checksum = smsMemory[0x7fe7] << 8;
-  checksum |= smsMemory[0x7fe6];
+  word checksum = smsMemory[0x7FE7] << 8;
+  checksum |= smsMemory[0x7FE6];
 
   if(checksum == 0x0)
   {
@@ -314,8 +324,8 @@ int EMU_IsCodeMaster()
 
   word compute = 0x10000 - checksum;
 
-  word answer = smsMemory[0x7fe9] << 8;
-  answer |= smsMemory[0x7fe8];
+  word answer = smsMemory[0x7FE9] << 8;
+  answer |= smsMemory[0x7FE8];
 
   if(compute == answer)
   {
@@ -494,7 +504,7 @@ byte EMU_ReadIO(byte address)
     return 0xFF;
   }
 
-  if((address >= 0x40) && (address < 0x80))
+  if((address >= 0x40) && (address <= 0x7F))
   {
     if((address % 2) == 0)
     {
@@ -504,7 +514,7 @@ byte EMU_ReadIO(byte address)
     return 0;
   }
 
-  if((address >= 0x80) && (address < 0xC0))
+  if((address >= 0x80) && (address <= 0xBF))
   {
     if((address % 2) == 0)
     {

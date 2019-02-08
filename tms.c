@@ -113,7 +113,7 @@ void TMS_SetRegisterData()
 	tmsRegister[reg] = data;
 
 	//si le reg active la vsync, alors on a une irq
-	if(reg == 1)
+	if(reg == 5)
 	{
 		if(BIT_ByteCheck(tmsStatus, 7) && BIT_ByteCheck(tmsRegister[0x1], 5))
 		{
