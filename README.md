@@ -38,7 +38,7 @@ The emulator can run the majority of SMS games but does not have Sound Emulation
 
 ## Installation
 
-Download the [latest release]() of Gui0x52 from the releases page.
+Download the [latest release](https://github.com/MS-DOS1999/Master-System-Emu_Gui0x52/releases/tag/Chili_Hot_Dog) of Gui0x52 from the releases page.
 
 ### Building from source
 
