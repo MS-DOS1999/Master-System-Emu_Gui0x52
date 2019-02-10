@@ -63,25 +63,26 @@ Other options:
 
 ## Joypad/Input
 
--Player 1 :
+-Player 1 :<br/>
 <kbd>Z</kbd> - Up<br/>
 <kbd>Q</kbd> - Left<br/>
 <kbd>S</kbd> - Down<br/>
 <kbd>D</kbd> - Right<br/>
 <kbd>K</kbd> - 1 Start<br/>
 <kbd>L</kbd> - 2<br/>
-
--Player 2 :
+<br/>
+-Player 2 :<br/>
 <kbd>↑</kbd> - Up<br/>
 <kbd>←</kbd> - Left<br/>
 <kbd>↓</kbd> - Down<br/>
 <kbd>→</kbd> - Right<br/>
 <kbd>Numpad 2</kbd> - 1 Start<br/>
 <kbd>Numpad 3</kbd> - 2<br/>
-
--Emulator :
+<br/>
+-Emulator :<br/>
 <kbd>SpaceBar</kbd> - Reset<br/>
 <kbd>Esc</kbd> - Quit Emulator<br/>
+<br/>
 
 <img src="Images/dragon.PNG" width="256"><img src="Images/cool.PNG" width="256">
 
@@ -95,7 +96,7 @@ Gui0x52 currently passes all of the tests in `zexdoc` test rom.
 <img src="Images/outrun.PNG" width="256"><img src="Images/ghost.PNG" width="256">
 
 ## Resources
-Resources were used to understand and test the GameBoy hardware. Some of these include:
+Resources were used to understand and test the Master System hardware. Some of these include:
 * <http://www.codeslinger.co.uk/pages/projects/mastersystem/resources.html>
 * <http://clrhome.org/table/>
 * <http://www.smspower.org/Development/Documents>
