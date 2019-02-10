@@ -1,32 +1,13 @@
 #include "emu.h"
 
-int DEBUG;
-int UNOP;
-
-byte smsMemory[0x10000];
-byte gameMemory[0x100000]; //un jeu SMS fait max 1 mega byte
-byte ramBank[0x2][0x4000];
-int isCodeMaster; //ce fabricant à une particularité à lui tout seul, on doit donc savoir si c'ets lui qui est chargé
-int oneMegaCartridge;
-int ramBankNumber;
-
-unsigned long int cyclesThisUpdate;
-
-byte slot0Page;
-byte slot1Page;
-byte slot2Page;
-
-byte joypadPortOne;
-byte joypadPortTwo;
-
-unsigned int FPS;
-
-sfRenderWindow* window;
-sfEvent event;
-SN soundChip;
-
 int main(int argc, char *argv[])
 {
+  struct config conf;
+
+  conf = EMU_GetConfig();
+  EMU_Intro();
+  EMU_FileBrowser();
+
   DEBUG = 0;
   char deb[6];
   strcpy(deb, "debug");
@@ -47,11 +28,34 @@ int main(int argc, char *argv[])
     }
   }
 
-  SDL_Init(SDL_INIT_AUDIO);
+  sfVideoMode mode;
+  if(conf.screenSize == '1')
+  {
+    mode = (sfVideoMode){256, 240, 32};
+    window = sfRenderWindow_create(mode, "Gui0x52 - Chili Hot Dog Version", sfClose, NULL);
+  }
+  else if(conf.screenSize == '2')
+  {
+    mode = (sfVideoMode){512, 480, 32};
+    window = sfRenderWindow_create(mode, "Gui0x52 - Chili Hot Dog Version", sfClose, NULL);
+  }
+  else if(conf.screenSize == '3')
+  {
+    sfVideoMode screenParam = sfVideoMode_getDesktopMode();
+    mode = (sfVideoMode){screenParam.width, screenParam.height, 32};
+    window = sfRenderWindow_create(mode, "Gui0x52 - Chili Hot Dog Version", sfFullscreen, NULL);
+  }
 
-  sfVideoMode mode = {256, 240, 32};
+  pixelSize = conf.screenSize - '0';
 
-  window = sfRenderWindow_create(mode, "Gui0x52 - Master System Emulator", sfClose, NULL);
+  if(conf.region == '0')
+  {
+    tmsIsPal = 0;
+  }
+  else if(conf.region == '1')
+  {
+    tmsIsPal = 1;
+  }
 
   sfClock* clock;
 
@@ -61,20 +65,53 @@ int main(int argc, char *argv[])
   sfTexture* screenTex;
   sfSprite* screenSpr;
 
-  screenImg = sfImage_createFromColor(256, 240, sfBlack);
+
+
+  if(conf.screenSize == '1')
+  { 
+    char path[2048];
+    GetCurrentDirectory(2048, path);
+    strcat(path, "/ScreenTex/screen1.png");
+    screenImg = sfImage_createFromFile(path);
+  }
+  else if(conf.screenSize == '2')
+  {
+    char path[2048];
+    GetCurrentDirectory(2048, path);
+    strcat(path, "/ScreenTex/screen2.png");
+    screenImg = sfImage_createFromFile(path);
+  }
+  else if(conf.screenSize == '3')
+  {
+    char path[2048];
+    GetCurrentDirectory(2048, path);
+    strcat(path, "/ScreenTex/screen3.png");
+    screenImg = sfImage_createFromFile(path);
+  }
   screenTex = sfTexture_createFromImage(screenImg, NULL);
   screenSpr = sfSprite_create();
   sfSprite_setTexture(screenSpr, screenTex, sfTrue);
   sfSprite_setPosition(screenSpr, (sfVector2f){ 0.0f, 0.0f });
+  if(conf.screenSize == '3')
+  {
+    int widthSMSScreen = 3 * 256;
+    int heightSMSScreen = 3 * 240;
+    sfVideoMode screenParam = sfVideoMode_getDesktopMode();
+    int x = (screenParam.width / 2) - (widthSMSScreen / 2);
+    int y = (screenParam.height / 2) - (heightSMSScreen / 2);
+    sfSprite_setPosition(screenSpr, (sfVector2f){ (float)x, (float)y });
+  }
 
   EMU_Init();
-  EMU_LoadRom("zexdoc.sms");
+  EMU_LoadRom(romName);
+  EMU_GetSave();
 
   const double VdpUpdateInterval = 1000/FPS;
 
   double lastFrameTime = 0;
+  quit = 0;
 
-  while(sfRenderWindow_isOpen(window)) //emu loop
+  while(sfRenderWindow_isOpen(window) && !quit) //emu loop
   {
 
     while (sfRenderWindow_pollEvent(window, &event))
@@ -82,6 +119,7 @@ int main(int argc, char *argv[])
       /* Close window : exit */
       if (event.type == sfEvtClosed)
       {
+          EMU_WriteSave();
           sfRenderWindow_close(window);
       }
 
@@ -101,7 +139,98 @@ int main(int argc, char *argv[])
     }
   }
 
+  EMU_WriteSave();
+
   return 0;
+}
+
+void EMU_GetSave()
+{
+  strcpy(saveName, romName);
+  char* savePointer;
+  savePointer = strstr(saveName, ".sms");
+  strncpy(savePointer, ".sav", 4);
+  //save found
+  FILE* saveFile = fopen(saveName, "rb");
+  if(saveFile != NULL)
+  {
+    fread(ramBank, sizeof(byte), sizeof(ramBank), saveFile);
+    fclose(saveFile);
+  }
+}
+
+void EMU_WriteSave()
+{
+  FILE* saveWFile = fopen(saveName, "wb");
+  fwrite(ramBank, sizeof(byte), sizeof(ramBank), saveWFile);
+  fclose(saveWFile);
+}
+
+struct config EMU_GetConfig()
+{
+  char path[2048];
+  GetCurrentDirectory(2048, path);
+  strcat(path, "/Config/config.txt");
+  struct config confStruct;
+  FILE* file = fopen(path, "r");
+
+  if(file != NULL)
+  {
+    char line[1024];
+    int i = 0;
+    while(fgets(line, sizeof(line), file) != NULL)
+    {
+      char *cfline;
+      cfline = strstr((char*)line, "=");
+      cfline = cfline + strlen("=");
+
+      if(i == 0)
+      {
+        confStruct.region = cfline[0];
+      }
+      else if(i == 1)
+      {
+        confStruct.screenSize = cfline[0];
+      }
+      i++;
+    }
+    fclose(file);
+  }
+  return confStruct;
+}
+
+void EMU_Intro()
+{
+  char *filename = "AsciiArt/intro.txt";
+  FILE *fptr = NULL;
+
+  if((fptr = fopen(filename,"r")) == NULL)
+  {
+      fprintf(stderr,"error opening %s\n",filename);
+  }
+
+  char read_string[200];
+ 
+  while(fgets(read_string,sizeof(read_string),fptr) != NULL)
+    printf("%s",read_string);
+
+  fclose(fptr);
+}
+
+void EMU_FileBrowser()
+{
+  OPENFILENAME ofn;
+  memset(romName, 0, sizeof(romName));
+  memset(&ofn,      0, sizeof(ofn));
+  ofn.lStructSize  = sizeof(ofn);
+  ofn.hwndOwner    = NULL;
+  ofn.lpstrFilter  = "MasterSystem Rom\0*.sms\0";
+  ofn.lpstrFile    = romName;
+  ofn.nMaxFile     = 2048;
+  ofn.lpstrTitle   = "Select a Rom, hell yeah !";
+  ofn.Flags        = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+  GetOpenFileNameA(&ofn);
 }
 
 void EMU_Init()
@@ -152,14 +281,9 @@ void EMU_Init()
   joypadPortOne = 0xFF;
   joypadPortTwo = 0xFF;
 
-  tmsIsPal = 0;
-
-  //FPS = tmsIsPal ? 50 : 60;
-  FPS = 1000000;
+  FPS = tmsIsPal ? 50 : 60;
   InitDAATable();
   TMS_Init();
-  soundChip.SN_Reset();
-
 }
 
 void EMU_Update()
@@ -193,12 +317,7 @@ void EMU_Update()
     float vdpClicks = z80Clicks;
     vdpClicks /= 2;
 
-    float soundClicks = z80Clicks;
-    soundClicks /= 3;
-
     TMS_Update(vdpClicks);
-
-    soundChip.SN_Update(soundClicks);
 
   }
 
@@ -220,7 +339,16 @@ void EMU_Render(sfImage* screenImg, sfTexture* screenTex, sfSprite* screenSpr)
           color.g = screenSmall[x][y][1];
           color.b = screenSmall[x][y][2];
           color.a = 255;
-          sfImage_setPixel(screenImg, x, y, color);
+
+          byte ix;
+          byte iy;
+          for(ix = 0; ix < pixelSize; ++ix)
+          {
+            for(iy = 0; iy < pixelSize; ++iy)
+            {
+              sfImage_setPixel(screenImg, x * pixelSize + ix, y * pixelSize + iy, color);
+            }
+          }
         }
       }
     }
@@ -235,7 +363,16 @@ void EMU_Render(sfImage* screenImg, sfTexture* screenTex, sfSprite* screenSpr)
           color.g = screenMedium[x][y][1];
           color.b = screenMedium[x][y][2];
           color.a = 255;
-          sfImage_setPixel(screenImg, x, y, color);
+          
+          byte ix;
+          byte iy;
+          for(ix = 0; ix < pixelSize; ++ix)
+          {
+            for(iy = 0; iy < pixelSize; ++iy)
+            {
+              sfImage_setPixel(screenImg, x * pixelSize + ix, y * pixelSize + iy, color);
+            }
+          }
         }
       }
     }
@@ -250,7 +387,16 @@ void EMU_Render(sfImage* screenImg, sfTexture* screenTex, sfSprite* screenSpr)
           color.g = screenHigh[x][y][1];
           color.b = screenHigh[x][y][2];
           color.a = 255;
-          sfImage_setPixel(screenImg, x, y, color);
+          
+          byte ix;
+          byte iy;
+          for(ix = 0; ix < pixelSize; ++ix)
+          {
+            for(iy = 0; iy < pixelSize; ++iy)
+            {
+              sfImage_setPixel(screenImg, x * pixelSize + ix, y * pixelSize + iy, color);
+            }
+          }
         }
       }
     }
@@ -548,14 +694,8 @@ byte EMU_ReadIO(byte address)
 
 void EMU_WriteIO(byte address, byte data)
 {
-  if(address < 0x40)
+  if(address < 0x80)
   {
-    return;
-  }
-
-  if((address >= 0x40) && (address < 0x80))
-  {
-    soundChip.SN_WriteData(cyclesThisUpdate, data);
     return;
   }
 
@@ -663,6 +803,10 @@ void EMU_HandleInput()
       port = 1;
       key = 7;
     }
+    else if(event.key.code == sfKeyEscape)
+    {
+      quit = 1;
+    }
     
     if (key != -1)
     {
@@ -727,6 +871,10 @@ void EMU_HandleInput()
     {
       port = 1; //(although marked as player 1 it is player 2 but using overlapped ports)
       key = 7;
+    }
+    else if(event.key.code == sfKeyEscape)
+    {
+      quit = 1;
     }
     
     if (key != -1)

@@ -1,35 +1,5 @@
 #include "z80.h"
 
-word programCounter;
-word stackPointer;
-
-byte registerI;
-byte registerR;
-
-Z80_register registerAF;
-Z80_register registerBC;
-Z80_register registerDE;
-Z80_register registerHL;
-Z80_register registerAFShadow;
-Z80_register registerBCShadow;
-Z80_register registerDEShadow;
-Z80_register registerHLShadow;
-
-//registre d'index
-Z80_register registerIX;
-Z80_register registerIY;
-
-byte ResetInt;
-byte ExecuteReset;
-int IntMode;
-byte IFF1;
-byte IFF2;
-byte Halted;
-byte EIPending;
-
-word DAATable[0x800];
-byte ZSPTable[256];
-
 void InitDAATable()
 {
 

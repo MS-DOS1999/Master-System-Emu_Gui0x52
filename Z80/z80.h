@@ -3,9 +3,9 @@
 
 #include <stdio.h>
 #include <windows.h>
-#include "oldSize.h"
-#include "emu.h"
-#include "tms.h"
+#include "../BITS/oldSize.h"
+#include "../MasterSystem/emu.h"
+#include "../TMS9918a/tms.h"
 
 #define C_Flag 0
 #define N_Flag 1
@@ -45,11 +45,11 @@ The Parity or Overflow flag has two meanings. Some instructions use the parity f
 The subtract flag is simply set when the instruction is a subtraction
 The carry flag is set when the instruction overflows its upper or lower limits.*/
 
-extern word programCounter;
-extern word stackPointer;
+word programCounter;
+word stackPointer;
 
-extern byte registerI;
-extern byte registerR;
+byte registerI;
+byte registerR;
 
 typedef union
 {
@@ -61,29 +61,29 @@ typedef union
   };
 }Z80_register;
 
-extern Z80_register registerAF;
-extern Z80_register registerBC;
-extern Z80_register registerDE;
-extern Z80_register registerHL;
-extern Z80_register registerAFShadow;
-extern Z80_register registerBCShadow;
-extern Z80_register registerDEShadow;
-extern Z80_register registerHLShadow;
+Z80_register registerAF;
+Z80_register registerBC;
+Z80_register registerDE;
+Z80_register registerHL;
+Z80_register registerAFShadow;
+Z80_register registerBCShadow;
+Z80_register registerDEShadow;
+Z80_register registerHLShadow;
 
 //registre d'index
-extern Z80_register registerIX;
-extern Z80_register registerIY;
+Z80_register registerIX;
+Z80_register registerIY;
 
-extern byte ResetInt;
-extern byte ExecuteReset;
-extern int IntMode;
-extern byte IFF1;
-extern byte IFF2;
-extern byte Halted;
-extern byte EIPending;
+byte ResetInt;
+byte ExecuteReset;
+int IntMode;
+byte IFF1;
+byte IFF2;
+byte Halted;
+byte EIPending;
 
-extern word DAATable[0x800];
-extern byte ZSPTable[256];
+word DAATable[0x800];
+byte ZSPTable[256];
 
 void InitDAATable();
 void Z80_UpdateInterrupts();

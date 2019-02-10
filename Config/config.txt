@@ -1,0 +1,18 @@
+Region=0
+ScreenSize=3
+
+
+// Value description //
+
+/*
+
+Region :
+	0 -> NTSC (60Hz)
+	1 -> PAL (50Hz)
+
+ScreenSize :
+	1 -> Original screen size (256x240)
+	2 -> Double Screen size (512x480)
+	3 -> FullScreen (in this mode, use Escape key to exit Emulator)
+	
+*/

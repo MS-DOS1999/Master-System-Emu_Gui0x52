@@ -4,19 +4,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 #include <SFML/Config.h>
+#include <SFML/Audio.h>
 #include <SFML/System.h>
 #include <SFML/Window.h>
 #include <SFML/Graphics.h>
 
-#include "oldSize.h"
-#include "bitUtils.h"
-#include "z80.h"
-#include "tms.h"
-#include "sn.h"
+#include "../BITS/oldSize.h"
+#include "../BITS/bitUtils.h"
+#include "../Z80/z80.h"
+#include "../TMS9918a/tms.h"
 
-extern int DEBUG;
-extern int UNOP;
+struct config
+{
+  char region;
+  char screenSize;
+};
+
+int pixelSize;
+
+int DEBUG;
+int UNOP;
 
 /*Region	    Maps to
   $0000-$03ff	ROM (unpaged)
@@ -32,28 +41,35 @@ extern int UNOP;
   $fffe	      Mapper slot 1 control
   $ffff	      Mapper slot 2 control
 */
-extern byte smsMemory[0x10000];
-extern byte gameMemory[0x100000]; //un jeu SMS fait max 1 mega byte
-extern byte ramBank[0x2][0x4000];
-extern int isCodeMaster; //ce fabricant à une particularité à lui tout seul, on doit donc savoir si c'ets lui qui est chargé
-extern int oneMegaCartridge;
-extern int ramBankNumber;
+byte smsMemory[0x10000];
+byte gameMemory[0x100000]; //un jeu SMS fait max 1 mega byte
+byte ramBank[0x2][0x4000];
+int isCodeMaster; //ce fabricant à une particularité à lui tout seul, on doit donc savoir si c'ets lui qui est chargé
+int oneMegaCartridge;
+int ramBankNumber;
+char romName[2048];
+char saveName[2048];
+char quit;
 
-extern unsigned long int cyclesThisUpdate;
+unsigned long int cyclesThisUpdate;
 
-extern byte slot0Page;
-extern byte slot1Page;
-extern byte slot2Page;
+byte slot0Page;
+byte slot1Page;
+byte slot2Page;
 
-extern byte joypadPortOne;
-extern byte joypadPortTwo;
+byte joypadPortOne;
+byte joypadPortTwo;
 
-extern unsigned int FPS;
+unsigned int FPS;
 
-extern sfRenderWindow* window;
-extern sfEvent event;
-extern SN soundChip;
+sfRenderWindow* window;
+sfEvent event;
 
+void EMU_GetSave();
+void EMU_WriteSave();
+struct config EMU_GetConfig();
+void EMU_Intro();
+void EMU_FileBrowser();
 void EMU_Init();
 void EMU_Update();
 void EMU_Render(sfImage* screenImg, sfTexture* screenTex, sfSprite* screenSpr);

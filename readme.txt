@@ -1,5 +1,3 @@
-# Gui0x52
-```bash
                                                 ,----,                     
           ____                                ,/   .`|                     
         ,'  , `.   ,---,       .--.--.      ,`   .'  :   ,---,.,-.----.    
@@ -28,74 +26,71 @@
 '--'.     /   \  ;  ; '--'.     /    ;   |.'  |   |    \|   : '  |/        
   `--'---'     :  \  \  `--'---'     '---'    |   :   .';   | |`-'         
                 \  ' ;                        |   | ,'  |   ;/             
-                 `--`                         `----'    '---'                                                                                 
- ```
+                 `--`                         `----'    '---'                                                                               
 
-Gui0x52 is a Windows Sega Master System emulator written in C/SFML.
-The emulator can run the majority of SMS games but does not have Sound Emulation.
+//////////////////////////////////////////////////
+///       JOYPAD - INPUT                       ///
+//////////////////////////////////////////////////
 
-<img src="Images/sonic.PNG" width="256"><img src="Images/worm.PNG" width="256"><img src="Images/battle.PNG" width="256"><img src="Images/ninja.PNG" width="256">
+/Master System/	-> 	/Keyboard/
 
-## Installation
+Player 1 :
 
-Download the [latest release]() of Gui0x52 from the releases page.
+Up		->	Z
 
-### Building from source
+Down		->	S
 
-Download or clone this repo, and run:
-```sh
-git clone https://github.com/MS-DOS1999/Master-System-Emu_Gui0x52.git
-cd Master-System-Emu_Gui0x52
-compile.bat
-```
-You need Gcc MinGW
-And CSFML lib
+Left		->	Q
 
-Gui0x52 is compatible only on Windows
+Right		->	D
 
-## Usage
+Start 1		->	K
 
-Just launch Gui0x52.exe and select your favorite game
+2		-> 	L
 
-Other options:
+Player 2 :
 
-  You can go in Config/ and change values in config.txt
+Up		->	Up Arrow
 
-## Joypad/Input
+Down		->	Down Arrow
 
--Player 1 :
-<kbd>Z</kbd> - Up<br/>
-<kbd>Q</kbd> - Left<br/>
-<kbd>S</kbd> - Down<br/>
-<kbd>D</kbd> - Right<br/>
-<kbd>K</kbd> - 1 Start<br/>
-<kbd>L</kbd> - 2<br/>
+Left		->	Left Arrow
 
--Player 2 :
-<kbd>↑</kbd> - Up<br/>
-<kbd>←</kbd> - Left<br/>
-<kbd>↓</kbd> - Down<br/>
-<kbd>→</kbd> - Right<br/>
-<kbd>Numpad 2</kbd> - 1 Start<br/>
-<kbd>Numpad 3</kbd> - 2<br/>
+Right		->	Right Arrow
 
--Emulator :
-<kbd>SpaceBar</kbd> - Reset<br/>
-<kbd>Esc</kbd> - Quit Emulator<br/>
+Start 1		->	Numpad 2
 
-<img src="Images/dragon.PNG" width="256"><img src="Images/cool.PNG" width="256">
+2		-> 	Numpad 3
 
-### Saving 
-A `<rom-name>.sav` (e.g. `Phantasy Star.sav`) file will be created at Emulator exit.
-If Save file exist, it automatically loaded when Gui0x52 is launched.
+Emulator :
 
-## Testing
-Gui0x52 currently passes all of the tests in `zexdoc` test rom.
+Reset		->	SpaceBar
 
-<img src="Images/outrun.PNG" width="256"><img src="Images/ghost.PNG" width="256">
+Exit Emulator   ->      Escape
 
-## Resources
-Resources were used to understand and test the GameBoy hardware. Some of these include:
-* <http://www.codeslinger.co.uk/pages/projects/mastersystem/resources.html>
-* <http://clrhome.org/table/>
-* <http://www.smspower.org/Development/Documents>
+//////////////////////////////////////////////////
+///     CONFIG                                 ///
+//////////////////////////////////////////////////
+
+To change Screen Size and Region you need to go in "Config" folder and change value in "config.txt"
+
+//////////////////////////////////////////////////
+///     FEATURES                               ///
+//////////////////////////////////////////////////
+
+- Z80 Emulation (Passed all zexdoc tests)
+- TMS9918a Emulation
+- MMU Emulation, Support Classic And CodeMaster, Support RAM
+- Multiple Resolution, Original(256x240), Double(512x480), Triple Fullscreen(768x720 Fullscreen Mode)
+- File browser to select your favorite rom
+- Support save, enregistred like this -> CURRENT_ROM.sav
+- Sadly, does not have Sound Emulation
+
+
+
+*************************************************
+***   Programmed by Julien Magnin with        ***
+***   some 8-bit love !                       ***
+*************************************************
+
+

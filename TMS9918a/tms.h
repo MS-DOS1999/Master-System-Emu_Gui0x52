@@ -1,12 +1,12 @@
 #ifndef TMS_H
 #define TMS_H
 
-#include "oldSize.h"
-#include "bitUtils.h"
+#include "../BITS/oldSize.h"
+#include "../BITS/bitUtils.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
-#include "emu.h"
+#include "../MasterSystem/emu.h"
 
 /*
 0x0000 - 0x1FFF = Sprite / tile patters (numbers 0 to 255) 
@@ -66,9 +66,9 @@ VCounter Values = 0x0-0xFF,0-0x0A,0xD2,0xFF
 #define NUM_RES_VERT_MED   224
 #define NUM_RES_VERT_HIGH  240
 
-extern byte screenSmall[NUM_RES_HORIZONTAL][NUM_RES_VERT_SMALL][3];
-extern byte screenMedium[NUM_RES_HORIZONTAL][NUM_RES_VERT_MED][3];
-extern byte screenHigh[NUM_RES_HORIZONTAL][NUM_RES_VERT_HIGH][3];
+byte screenSmall[NUM_RES_HORIZONTAL][NUM_RES_VERT_SMALL][3];
+byte screenMedium[NUM_RES_HORIZONTAL][NUM_RES_VERT_MED][3];
+byte screenHigh[NUM_RES_HORIZONTAL][NUM_RES_VERT_HIGH][3];
 
 /*
 Register 0x0:
@@ -124,36 +124,36 @@ Register 0xA:
 The entire 8 bit register is what the line counter should be set to (explained later)
 */
 
-extern byte videoMemory[0x4000];
-extern byte paletteMemory[32];
+byte videoMemory[0x4000];
+byte paletteMemory[32];
 
-extern byte tmsRegister[0xB];
+byte tmsRegister[0xB];
 
-extern word controlWord;
-extern byte isSecondWrite;
-extern byte readBuffer;
+word controlWord;
+byte isSecondWrite;
+byte readBuffer;
 
-extern byte tmsStatus;
+byte tmsStatus;
 
-extern word HCounter;
-extern byte VCounter;
-extern byte VCounterFirst;
+word HCounter;
+byte VCounter;
+byte VCounterFirst;
 
-extern byte lineInterrupt;
-extern byte VScroll;
+byte lineInterrupt;
+byte VScroll;
 
-extern byte tmsIrq;
+byte tmsIrq;
 
-extern float tmsRunningCycles;
+float tmsRunningCycles;
 
-extern word tmsHeight;
-extern word tmsWidth;
+word tmsHeight;
+word tmsWidth;
 
-extern byte tmsIsPal;
+byte tmsIsPal;
 
-extern byte ScreenDisabled;
+byte ScreenDisabled;
 
-extern byte refresh;
+byte refresh;
 
 void TMS_ResetScreen();
 void TMS_WriteAddress(byte data);
